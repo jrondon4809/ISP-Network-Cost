@@ -71,14 +71,15 @@ export const NetworkDiagram = () => {
         y: Math.random() * 300 + 100,
       },
       data: {
-        name: `Node ${nodes.length + 1}`,
+        name: `Node ${nodes.filter(n => n.type === 'networkNode').length + 1}`,
         rent: '0',
         carryInRent: '0',
+        internetInput: '0',
       },
     };
     setNodes((nds) => [...nds, newNode]);
     toast.success('Node added successfully');
-  }, [nodes.length]);
+  }, [nodes]);
 
   const addTable = useCallback(() => {
     const newTable = {
@@ -97,7 +98,8 @@ export const NetworkDiagram = () => {
             bw: '100 Mbps',
             prCost: '$50',
             intCost: '$30',
-            totalCost: '$80',
+            transpCost: '$20',
+            totalCost: '$100',
           },
         ],
       },
@@ -336,6 +338,8 @@ export const NetworkDiagram = () => {
       {selectedTable && (
         <TableEditDialog
           table={selectedTable}
+          nodes={nodes}
+          edges={edges}
           onSave={(data) => updateTable(selectedTable.id, data)}
           onClose={() => setSelectedTable(null)}
         />

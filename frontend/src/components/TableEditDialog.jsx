@@ -10,10 +10,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Calculator } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-export const TableEditDialog = ({ table, onSave, onClose }) => {
+export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
@@ -30,6 +30,7 @@ export const TableEditDialog = ({ table, onSave, onClose }) => {
       bw: '',
       prCost: '',
       intCost: '',
+      transpCost: '',
       totalCost: '',
     };
     setRows([...rows, newRow]);
@@ -45,6 +46,65 @@ export const TableEditDialog = ({ table, onSave, onClose }) => {
     );
   };
 
+  const calculatePRCost = () => {
+    if (!table || !nodes || !edges) return;
+
+    // Find edges connected to this table
+    const connectedEdges = edges.filter(edge => edge.target === table.id);
+    
+    if (connectedEdges.length === 0) {
+      alert('No connections found to this table. Connect a node to calculate PR Cost.');
+      return;
+    }
+
+    // Use the first connected edge
+    const edge = connectedEdges[0];
+    const sourceNode = nodes.find(n => n.id === edge.source);
+    
+    if (!sourceNode || sourceNode.type !== 'networkNode') {
+      alert('Connected node not found or is not a network node.');
+      return;
+    }
+
+    // Calculate node total cost
+    const rent = parseFloat(sourceNode.data.rent) || 0;
+    const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
+    const nodeTotalCost = rent + carryInRent;
+
+    // Get bandwidth from edge
+    const bandwidthStr = edge.data?.bandwidth || '100 Mbps';
+    const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+    const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+
+    if (bandwidth === 0) {
+      alert('Bandwidth cannot be zero.');
+      return;
+    }
+
+    // Calculate PR Cost for each row
+    const updatedRows = rows.map(row => {
+      // Get row bandwidth
+      const rowBwStr = row.bw || '0';
+      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+
+      if (rowBandwidth === 0) {
+        return row;
+      }
+
+      // PR Cost = (Node Total Cost / Link Bandwidth) * Row Bandwidth
+      const prCost = (nodeTotalCost / bandwidth) * rowBandwidth;
+      
+      return {
+        ...row,
+        prCost: '$' + prCost.toFixed(2)
+      };
+    });
+
+    setRows(updatedRows);
+    alert(`PR Cost calculated based on Node "${sourceNode.data.name}" (Total: $${nodeTotalCost.toFixed(2)}) and Link Bandwidth: ${bandwidth} Mbps`);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({ rows });
@@ -52,15 +112,29 @@ export const TableEditDialog = ({ table, onSave, onClose }) => {
 
   return (
     <Dialog open={!!table} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] max-h-[80vh]">
+      <DialogContent className="sm:max-w-[800px] max-h-[85vh]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Table</DialogTitle>
             <DialogDescription>
-              Manage table rows and data below.
+              Manage table rows and data below. Connect to a node and use Calculate PR Cost.
             </DialogDescription>
           </DialogHeader>
-          <ScrollArea className="max-h-[50vh] pr-4">
+          <div className="my-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={calculatePRCost}
+              className="gap-2 w-full"
+            >
+              <Calculator className="w-4 h-4" />
+              Calculate PR Cost from Connected Node
+            </Button>
+            <p className="text-xs text-muted-foreground mt-2 text-center">
+              PR Cost = (Node Total Cost ÷ Link Bandwidth) × Row Bandwidth
+            </p>
+          </div>
+          <ScrollArea className="max-h-[45vh] pr-4">
             <div className="space-y-4 py-4">
               {rows.map((row, index) => (
                 <div
@@ -105,7 +179,7 @@ export const TableEditDialog = ({ table, onSave, onClose }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">BW</Label>
+                      <Label className="text-xs">BW (e.g., 100 Mbps)</Label>
                       <Input
                         value={row.bw}
                         onChange={(e) => updateRow(row.id, 'bw', e.target.value)}
@@ -114,14 +188,14 @@ export const TableEditDialog = ({ table, onSave, onClose }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">PR Cost</Label>
+                      <Label className="text-xs">PR Cost (auto-calculated)</Label>
                       <Input
                         value={row.prCost}
                         onChange={(e) =>
                           updateRow(row.id, 'prCost', e.target.value)
                         }
                         placeholder="PR cost"
-                        className="h-9"
+                        className="h-9 bg-muted/50"
                       />
                     </div>
                     <div className="grid gap-1.5">
@@ -136,6 +210,17 @@ export const TableEditDialog = ({ table, onSave, onClose }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
+                      <Label className="text-xs">Transp Cost</Label>
+                      <Input
+                        value={row.transpCost}
+                        onChange={(e) =>
+                          updateRow(row.id, 'transpCost', e.target.value)
+                        }
+                        placeholder="Transport cost"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="grid gap-1.5 col-span-2">
                       <Label className="text-xs">Total Cost</Label>
                       <Input
                         value={row.totalCost}

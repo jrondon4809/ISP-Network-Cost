@@ -29,23 +29,25 @@ export const TableNode = ({ data, selected }) => {
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-muted/50">
-                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium">Client</th>
-                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium">Service</th>
-                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium">BW</th>
-                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium">PR Cost</th>
-                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium">Int Cost</th>
-                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium">Total</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Client</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Service</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">BW</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">PR Cost</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Int Cost</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Transp Cost</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Total</th>
               </tr>
             </thead>
             <tbody>
               {data.rows?.slice(0, 3).map((row, index) => (
                 <tr key={row.id || index} className="border-t border-border">
-                  <td className="px-2 py-1.5 text-foreground">{row.client}</td>
-                  <td className="px-2 py-1.5 text-foreground">{row.service}</td>
-                  <td className="px-2 py-1.5 text-foreground">{row.bw}</td>
-                  <td className="px-2 py-1.5 text-foreground">{row.prCost}</td>
-                  <td className="px-2 py-1.5 text-foreground">{row.intCost}</td>
-                  <td className="px-2 py-1.5 font-medium text-foreground">{row.totalCost}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.client}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.service}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.bw}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.prCost}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.intCost}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.transpCost}</td>
+                  <td className="px-2 py-1.5 font-medium text-foreground whitespace-nowrap">{row.totalCost}</td>
                 </tr>
               ))}
             </tbody>
