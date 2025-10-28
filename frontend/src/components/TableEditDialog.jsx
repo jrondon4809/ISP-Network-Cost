@@ -138,23 +138,33 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           <DialogHeader>
             <DialogTitle>Edit Table</DialogTitle>
             <DialogDescription>
-              Manage table rows and data below. Connect to a node and use Calculate PR Cost.
+              Manage table rows and data below. PR Cost is auto-calculated from connected node.
             </DialogDescription>
           </DialogHeader>
-          <div className="my-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={calculatePRCost}
-              className="gap-2 w-full"
-            >
-              <Calculator className="w-4 h-4" />
-              Calculate PR Cost from Connected Node
-            </Button>
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              PR Cost = (Node Total Cost ÷ Link Bandwidth) × Row Bandwidth
-            </p>
-          </div>
+          {connectionInfo && (
+            <div className="my-3 p-3 bg-primary/5 rounded-lg border border-primary/20">
+              <div className="flex items-center gap-2 mb-1">
+                <Calculator className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">Auto-Calculation Active</span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Connected to: <span className="font-medium">{connectionInfo.nodeName}</span> (Total: ${connectionInfo.nodeTotalCost.toFixed(2)})
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Link Bandwidth: <span className="font-medium">{connectionInfo.bandwidth}</span>
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Formula: PR Cost = (Node Total Cost ÷ Link BW) × Row BW
+              </p>
+            </div>
+          )}
+          {!connectionInfo && (
+            <div className="my-3 p-3 bg-muted/50 rounded-lg border border-border">
+              <p className="text-xs text-muted-foreground">
+                ⚠️ Connect this table to a node to enable automatic PR Cost calculation
+              </p>
+            </div>
+          )}
           <ScrollArea className="max-h-[45vh] pr-4">
             <div className="space-y-4 py-4">
               {rows.map((row, index) => (
