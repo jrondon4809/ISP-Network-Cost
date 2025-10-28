@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactFlow, {
   Controls,
   Background,
@@ -31,6 +31,76 @@ export const NetworkDiagram = () => {
   const [selectedTable, setSelectedTable] = useState(null);
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
+  // Auto-calculate Carry In Rent for all nodes based on incoming connections
+  useEffect(() => {
+    const calculateCarryIn = () => {
+      setNodes((currentNodes) => {
+        return currentNodes.map((node) => {
+          // Only process network nodes
+          if (node.type !== 'networkNode') return node;
+
+          // Find incoming edges to this node
+          const incomingEdges = edges.filter(edge => edge.target === node.id);
+
+          if (incomingEdges.length === 0) {
+            // No incoming connection, Carry In = 0
+            if (node.data.carryInRent !== '0') {
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  carryInRent: '0'
+                }
+              };
+            }
+            return node;
+          }
+
+          // Use the first incoming edge for calculation
+          const incomingEdge = incomingEdges[0];
+          const sourceNode = currentNodes.find(n => n.id === incomingEdge.source);
+
+          if (!sourceNode || sourceNode.type !== 'networkNode') {
+            return node;
+          }
+
+          // Calculate source node total cost
+          const sourceRent = parseFloat(sourceNode.data.rent) || 0;
+          const sourceCarryIn = parseFloat(sourceNode.data.carryInRent) || 0;
+          const sourceTotalCost = sourceRent + sourceCarryIn;
+
+          // Get bandwidth from edge
+          const bandwidthStr = incomingEdge.data?.bandwidth || '100 Mbps';
+          const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+          const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+
+          if (bandwidth === 0) {
+            return node;
+          }
+
+          // Calculate Carry In: Source Total Cost ÷ Link Bandwidth
+          const carryIn = sourceTotalCost / bandwidth;
+          const carryInStr = carryIn.toFixed(2);
+
+          // Only update if value changed
+          if (node.data.carryInRent !== carryInStr) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                carryInRent: carryInStr
+              }
+            };
+          }
+
+          return node;
+        });
+      });
+    };
+
+    calculateCarryIn();
+  }, [edges, nodes.length]); // Recalculate when edges change or nodes are added/removed
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
