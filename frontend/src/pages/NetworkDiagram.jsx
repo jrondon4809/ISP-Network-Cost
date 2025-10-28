@@ -70,17 +70,29 @@ export const NetworkDiagram = () => {
           const sourceCarryIn = parseFloat(sourceNode.data.carryInRent) || 0;
           const sourceTotalCost = sourceRent + sourceCarryIn;
 
-          // Get bandwidth from edge
-          const bandwidthStr = incomingEdge.data?.bandwidth || '100 Mbps';
-          const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
-          const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+          // Find ALL outgoing edges from the source node
+          const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
+          
+          // Calculate total sum of all outgoing link bandwidths from source node
+          let totalBandwidth = 0;
+          outgoingEdges.forEach(outEdge => {
+            const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
+            const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+            const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+            totalBandwidth += bandwidth;
+          });
 
-          if (bandwidth === 0) {
+          if (totalBandwidth === 0) {
             return node;
           }
 
-          // Calculate Carry In: Source Total Cost ÷ Link Bandwidth
-          const carryIn = sourceTotalCost / bandwidth;
+          // Get bandwidth of the incoming link
+          const incomingBandwidthStr = incomingEdge.data?.bandwidth || '100 Mbps';
+          const incomingBandwidthMatch = incomingBandwidthStr.match(/(\d+(?:\.\d+)?)/);
+          const incomingBandwidth = incomingBandwidthMatch ? parseFloat(incomingBandwidthMatch[1]) : 100;
+
+          // Calculate Carry In: (Source Total Cost ÷ Total Outgoing Bandwidth) × Incoming Link Bandwidth
+          const carryIn = (sourceTotalCost / totalBandwidth) * incomingBandwidth;
           const carryInStr = carryIn.toFixed(2);
 
           // Only update if value changed
