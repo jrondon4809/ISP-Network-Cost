@@ -94,9 +94,9 @@ export const EdgeEditDialog = ({ edge, onSave, onClose }) => {
                   <SelectValue placeholder="Select link type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="solid">Solid Line (Blue)</SelectItem>
-                  <SelectItem value="dashed">Dashed Line (Green)</SelectItem>
-                  <SelectItem value="arrow">Animated Arrow (Purple)</SelectItem>
+                  <SelectItem value="solid">Fiber OFF Net (Blue)</SelectItem>
+                  <SelectItem value="dashed">Wireless ON Net (Green)</SelectItem>
+                  <SelectItem value="arrow">Fiber ON NET (Purple)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
