@@ -154,18 +154,34 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     
     // Calculate total sum of all outgoing link bandwidths from source node
     const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
-    let totalBandwidth = 0;
+    let totalOutgoingBandwidth = 0;
     outgoingEdges.forEach(outEdge => {
       const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
       const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
       const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
-      totalBandwidth += bandwidth;
+      totalOutgoingBandwidth += bandwidth;
+    });
+
+    // Get link bandwidth
+    const linkBandwidthStr = connectedEdge.data?.bandwidth || '100 Mbps';
+    const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
+    const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
+
+    // Calculate total table bandwidth
+    let totalTableBandwidth = 0;
+    rows.forEach(row => {
+      const rowBwStr = row.bw || '0';
+      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+      totalTableBandwidth += rowBandwidth;
     });
     
     return {
       nodeName: sourceNode.data.name,
       nodeTotalCost,
-      totalBandwidth: `${totalBandwidth} Mbps (sum of ${outgoingEdges.length} outgoing links)`,
+      totalOutgoingBandwidth: `${totalOutgoingBandwidth} Mbps (sum of ${outgoingEdges.length} outgoing links)`,
+      linkBandwidth: `${linkBandwidth} Mbps`,
+      totalTableBandwidth: `${totalTableBandwidth} Mbps`,
       outgoingLinksCount: outgoingEdges.length
     };
   };
