@@ -22,6 +22,62 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     }
   }, [table]);
 
+  // Auto-calculate PR Cost whenever dialog opens or dependencies change
+  useEffect(() => {
+    if (!table || !nodes || !edges) return;
+
+    // Find edges connected to this table
+    const connectedEdges = edges.filter(edge => edge.target === table.id);
+    
+    if (connectedEdges.length === 0) {
+      return; // No connections, can't calculate
+    }
+
+    // Use the first connected edge
+    const edge = connectedEdges[0];
+    const sourceNode = nodes.find(n => n.id === edge.source);
+    
+    if (!sourceNode || sourceNode.type !== 'networkNode') {
+      return;
+    }
+
+    // Calculate node total cost
+    const rent = parseFloat(sourceNode.data.rent) || 0;
+    const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
+    const nodeTotalCost = rent + carryInRent;
+
+    // Get bandwidth from edge
+    const bandwidthStr = edge.data?.bandwidth || '100 Mbps';
+    const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+    const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+
+    if (bandwidth === 0) {
+      return;
+    }
+
+    // Calculate PR Cost for each row automatically
+    setRows(currentRows => {
+      return currentRows.map(row => {
+        // Get row bandwidth
+        const rowBwStr = row.bw || '0';
+        const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+        const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+
+        if (rowBandwidth === 0) {
+          return row;
+        }
+
+        // PR Cost = (Node Total Cost / Link Bandwidth) * Row Bandwidth
+        const prCost = (nodeTotalCost / bandwidth) * rowBandwidth;
+        
+        return {
+          ...row,
+          prCost: '$' + prCost.toFixed(2)
+        };
+      });
+    });
+  }, [table, nodes, edges]); // Auto-recalculate when any of these change
+
   const addRow = () => {
     const newRow = {
       id: Date.now(),
