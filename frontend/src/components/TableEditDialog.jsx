@@ -168,10 +168,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                 Connected to: <span className="font-medium">{connectionInfo.nodeName}</span> (Total: ${connectionInfo.nodeTotalCost.toFixed(2)})
               </p>
               <p className="text-xs text-muted-foreground">
-                Link Bandwidth: <span className="font-medium">{connectionInfo.bandwidth}</span>
+                Total Outgoing Bandwidth: <span className="font-medium">{connectionInfo.totalBandwidth}</span>
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                Formula: PR Cost = (Node Total Cost ÷ Link BW) × Row BW
+                Formula: PR Cost = (Node Total Cost ÷ Total Outgoing BW) × Row BW
               </p>
             </div>
           )}
