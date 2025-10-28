@@ -59,6 +59,13 @@ export const NetworkNode = ({ data, selected }) => {
               {data.internetInput || '0'} Mbps
             </span>
           </div>
+          <div className="flex items-center justify-between gap-2 p-1.5 bg-warning/10 rounded border border-warning/20">
+            <span className="text-warning font-medium">Int Cost:</span>
+            <span className="font-medium text-warning flex items-center gap-1">
+              <DollarSign className="w-3 h-3" />
+              {data.internetCost || '0'}/Mbps
+            </span>
+          </div>
         </div>
       </div>
 
