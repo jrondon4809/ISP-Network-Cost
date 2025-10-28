@@ -18,6 +18,7 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
     rent: '',
     carryInRent: '',
     internetInput: '',
+    internetCost: '',
   });
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
         rent: node.data.rent || '',
         carryInRent: node.data.carryInRent || '',
         internetInput: node.data.internetInput || '',
+        internetCost: node.data.internetCost || '',
       });
     }
   }, [node]);
