@@ -84,7 +84,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       client: '',
       service: '',
       bw: '',
-      prCost: '',
+      prCost: '$0.00',
       intCost: '',
       transpCost: '',
       totalCost: '',
@@ -102,69 +102,34 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     );
   };
 
-  const calculatePRCost = () => {
-    if (!table || !nodes || !edges) return;
-
-    // Find edges connected to this table
-    const connectedEdges = edges.filter(edge => edge.target === table.id);
-    
-    if (connectedEdges.length === 0) {
-      alert('No connections found to this table. Connect a node to calculate PR Cost.');
-      return;
-    }
-
-    // Use the first connected edge
-    const edge = connectedEdges[0];
-    const sourceNode = nodes.find(n => n.id === edge.source);
-    
-    if (!sourceNode || sourceNode.type !== 'networkNode') {
-      alert('Connected node not found or is not a network node.');
-      return;
-    }
-
-    // Calculate node total cost
-    const rent = parseFloat(sourceNode.data.rent) || 0;
-    const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
-    const nodeTotalCost = rent + carryInRent;
-
-    // Get bandwidth from edge
-    const bandwidthStr = edge.data?.bandwidth || '100 Mbps';
-    const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
-    const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
-
-    if (bandwidth === 0) {
-      alert('Bandwidth cannot be zero.');
-      return;
-    }
-
-    // Calculate PR Cost for each row
-    const updatedRows = rows.map(row => {
-      // Get row bandwidth
-      const rowBwStr = row.bw || '0';
-      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
-      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
-
-      if (rowBandwidth === 0) {
-        return row;
-      }
-
-      // PR Cost = (Node Total Cost / Link Bandwidth) * Row Bandwidth
-      const prCost = (nodeTotalCost / bandwidth) * rowBandwidth;
-      
-      return {
-        ...row,
-        prCost: '$' + prCost.toFixed(2)
-      };
-    });
-
-    setRows(updatedRows);
-    alert(`PR Cost calculated based on Node "${sourceNode.data.name}" (Total: $${nodeTotalCost.toFixed(2)}) and Link Bandwidth: ${bandwidth} Mbps`);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({ rows });
   };
+
+  // Get connection info for display
+  const getConnectionInfo = () => {
+    if (!table || !nodes || !edges) return null;
+    
+    const connectedEdge = edges.find(edge => edge.target === table.id);
+    if (!connectedEdge) return null;
+    
+    const sourceNode = nodes.find(n => n.id === connectedEdge.source);
+    if (!sourceNode || sourceNode.type !== 'networkNode') return null;
+    
+    const rent = parseFloat(sourceNode.data.rent) || 0;
+    const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
+    const nodeTotalCost = rent + carryInRent;
+    const bandwidth = connectedEdge.data?.bandwidth || '100 Mbps';
+    
+    return {
+      nodeName: sourceNode.data.name,
+      nodeTotalCost,
+      bandwidth
+    };
+  };
+
+  const connectionInfo = getConnectionInfo();
 
   return (
     <Dialog open={!!table} onOpenChange={onClose}>
