@@ -67,24 +67,24 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
     const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
 
-    // Calculate total sum of BW column in the table
-    let totalTableBandwidth = 0;
-    rows.forEach(row => {
-      const rowBwStr = row.bw || '0';
-      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
-      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
-      totalTableBandwidth += rowBandwidth;
-    });
-
-    if (totalTableBandwidth === 0) {
-      return; // No bandwidth in table to calculate against
-    }
-
     // Calculate PR Cost for each row automatically
-    // Formula: (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW
-    const costPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
-
     setRows(currentRows => {
+      // Calculate total sum of BW column in the table
+      let totalTableBandwidth = 0;
+      currentRows.forEach(row => {
+        const rowBwStr = row.bw || '0';
+        const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+        const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+        totalTableBandwidth += rowBandwidth;
+      });
+
+      if (totalTableBandwidth === 0) {
+        return currentRows; // No bandwidth in table to calculate against
+      }
+
+      // Formula: (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW
+      const costPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
+
       return currentRows.map(row => {
         // Get row bandwidth
         const rowBwStr = row.bw || '0';
@@ -107,7 +107,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         };
       });
     });
-  }, [table, nodes, edges, rows]); // Auto-recalculate when any of these change
+  }, [table, nodes, edges]); // Don't include rows in dependencies to avoid infinite loop
 
   const addRow = () => {
     const newRow = {
