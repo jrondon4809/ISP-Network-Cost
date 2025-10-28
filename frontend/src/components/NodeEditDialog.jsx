@@ -124,6 +124,20 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
                 placeholder="Enter internet speed in Mbps"
               />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="internetCost" className="flex items-center gap-2">
+                <DollarSign className="w-4 h-4" />
+                Internet Cost ($/Mbps)
+              </Label>
+              <Input
+                id="internetCost"
+                type="number"
+                step="0.01"
+                value={formData.internetCost}
+                onChange={(e) => handleChange('internetCost', e.target.value)}
+                placeholder="Enter cost per Mbps"
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
