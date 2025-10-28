@@ -292,7 +292,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
               </Button>
             </div>
           </ScrollArea>
-          <DialogFooter>
+          <DialogFooter className="flex-shrink-0 mt-4">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
