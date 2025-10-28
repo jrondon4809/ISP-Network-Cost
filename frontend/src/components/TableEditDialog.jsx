@@ -222,11 +222,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       <Label className="text-xs">PR Cost (auto-calculated)</Label>
                       <Input
                         value={row.prCost}
-                        onChange={(e) =>
-                          updateRow(row.id, 'prCost', e.target.value)
-                        }
-                        placeholder="PR cost"
-                        className="h-9 bg-muted/50"
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
                       />
                     </div>
                     <div className="grid gap-1.5">
