@@ -204,15 +204,29 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                 <Calculator className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-foreground">Auto-Calculation Active</span>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Connected to: <span className="font-medium">{connectionInfo.nodeName}</span> (Total: ${connectionInfo.nodeTotalCost.toFixed(2)})
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Total Outgoing Bandwidth: <span className="font-medium">{connectionInfo.totalBandwidth}</span>
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Formula: PR Cost = (Node Total Cost ÷ Total Outgoing BW) × Row BW
-              </p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground mt-2">
+                <div>
+                  <span className="font-medium">Connected Node:</span> {connectionInfo.nodeName}
+                </div>
+                <div>
+                  <span className="font-medium">Node Total Cost:</span> ${connectionInfo.nodeTotalCost.toFixed(2)}
+                </div>
+                <div>
+                  <span className="font-medium">Total Outgoing BW:</span> {connectionInfo.totalOutgoingBandwidth}
+                </div>
+                <div>
+                  <span className="font-medium">This Link BW:</span> {connectionInfo.linkBandwidth}
+                </div>
+                <div className="col-span-2">
+                  <span className="font-medium">Table Total BW:</span> {connectionInfo.totalTableBandwidth}
+                </div>
+              </div>
+              <div className="mt-2 p-2 bg-background/50 rounded text-xs">
+                <p className="font-medium text-foreground mb-1">Formula:</p>
+                <p className="text-muted-foreground">
+                  PR Cost = (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW
+                </p>
+              </div>
             </div>
           )}
           {!connectionInfo && (
