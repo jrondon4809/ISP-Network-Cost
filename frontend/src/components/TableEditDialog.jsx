@@ -150,16 +150,16 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
 
   return (
     <Dialog open={!!table} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[800px] max-h-[85vh]">
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
+      <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+          <DialogHeader className="flex-shrink-0">
             <DialogTitle>Edit Table</DialogTitle>
             <DialogDescription>
               Manage table rows and data below. PR Cost is auto-calculated from connected node.
             </DialogDescription>
           </DialogHeader>
           {connectionInfo && (
-            <div className="my-3 p-3 bg-primary/5 rounded-lg border border-primary/20">
+            <div className="my-3 p-3 bg-primary/5 rounded-lg border border-primary/20 flex-shrink-0">
               <div className="flex items-center gap-2 mb-1">
                 <Calculator className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-foreground">Auto-Calculation Active</span>
@@ -176,13 +176,13 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             </div>
           )}
           {!connectionInfo && (
-            <div className="my-3 p-3 bg-muted/50 rounded-lg border border-border">
+            <div className="my-3 p-3 bg-muted/50 rounded-lg border border-border flex-shrink-0">
               <p className="text-xs text-muted-foreground">
                 ⚠️ Connect this table to a node to enable automatic PR Cost calculation
               </p>
             </div>
           )}
-          <ScrollArea className="max-h-[45vh] pr-4">
+          <ScrollArea className="flex-1 pr-4 max-h-[50vh]">
             <div className="space-y-4 py-4">
               {rows.map((row, index) => (
                 <div
