@@ -46,12 +46,19 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
     const nodeTotalCost = rent + carryInRent;
 
-    // Get bandwidth from edge
-    const bandwidthStr = edge.data?.bandwidth || '100 Mbps';
-    const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
-    const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+    // Find ALL outgoing edges from the source node
+    const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
+    
+    // Calculate total sum of all outgoing link bandwidths
+    let totalBandwidth = 0;
+    outgoingEdges.forEach(outEdge => {
+      const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
+      const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+      const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+      totalBandwidth += bandwidth;
+    });
 
-    if (bandwidth === 0) {
+    if (totalBandwidth === 0) {
       return;
     }
 
@@ -67,8 +74,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           return row;
         }
 
-        // PR Cost = (Node Total Cost / Link Bandwidth) * Row Bandwidth
-        const prCost = (nodeTotalCost / bandwidth) * rowBandwidth;
+        // PR Cost = (Node Total Cost / Total Sum of Outgoing Link Bandwidths) * Row Bandwidth
+        const prCost = (nodeTotalCost / totalBandwidth) * rowBandwidth;
         
         return {
           ...row,
