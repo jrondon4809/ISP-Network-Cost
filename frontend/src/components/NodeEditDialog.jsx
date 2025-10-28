@@ -82,16 +82,21 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
             <div className="grid gap-2">
               <Label htmlFor="carryInRent" className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4" />
-                Carry In Rent
+                Carry In Rent (Auto-calculated)
               </Label>
               <Input
                 id="carryInRent"
                 type="number"
                 step="0.01"
                 value={formData.carryInRent}
-                onChange={(e) => handleChange('carryInRent', e.target.value)}
-                placeholder="Enter carry in rent"
+                readOnly
+                disabled
+                className="bg-muted cursor-not-allowed"
+                placeholder="Auto-calculated from incoming link"
               />
+              <p className="text-xs text-muted-foreground">
+                Formula: Source Node Total Cost ÷ Link Bandwidth
+              </p>
             </div>
             <div className="p-3 bg-primary/5 rounded-lg border border-primary/20">
               <div className="flex items-center justify-between">
