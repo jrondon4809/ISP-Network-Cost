@@ -127,12 +127,22 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const rent = parseFloat(sourceNode.data.rent) || 0;
     const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
     const nodeTotalCost = rent + carryInRent;
-    const bandwidth = connectedEdge.data?.bandwidth || '100 Mbps';
+    
+    // Calculate total sum of all outgoing link bandwidths from source node
+    const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
+    let totalBandwidth = 0;
+    outgoingEdges.forEach(outEdge => {
+      const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
+      const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+      const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+      totalBandwidth += bandwidth;
+    });
     
     return {
       nodeName: sourceNode.data.name,
       nodeTotalCost,
-      bandwidth
+      totalBandwidth: `${totalBandwidth} Mbps (sum of ${outgoingEdges.length} outgoing links)`,
+      outgoingLinksCount: outgoingEdges.length
     };
   };
 
