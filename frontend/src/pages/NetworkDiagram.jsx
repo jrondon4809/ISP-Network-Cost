@@ -157,6 +157,7 @@ export const NetworkDiagram = () => {
         rent: '0',
         carryInRent: '0',
         internetInput: '0',
+        internetCost: '0',
       },
     };
     setNodes((nds) => [...nds, newNode]);
