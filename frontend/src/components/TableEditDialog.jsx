@@ -50,19 +50,40 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
     
     // Calculate total sum of all outgoing link bandwidths
-    let totalBandwidth = 0;
+    let totalOutgoingBandwidth = 0;
     outgoingEdges.forEach(outEdge => {
       const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
       const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
       const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
-      totalBandwidth += bandwidth;
+      totalOutgoingBandwidth += bandwidth;
     });
 
-    if (totalBandwidth === 0) {
+    if (totalOutgoingBandwidth === 0) {
       return;
     }
 
+    // Get bandwidth of the link connecting to this table
+    const linkBandwidthStr = edge.data?.bandwidth || '100 Mbps';
+    const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
+    const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
+
+    // Calculate total sum of BW column in the table
+    let totalTableBandwidth = 0;
+    rows.forEach(row => {
+      const rowBwStr = row.bw || '0';
+      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+      totalTableBandwidth += rowBandwidth;
+    });
+
+    if (totalTableBandwidth === 0) {
+      return; // No bandwidth in table to calculate against
+    }
+
     // Calculate PR Cost for each row automatically
+    // Formula: (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW
+    const costPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
+
     setRows(currentRows => {
       return currentRows.map(row => {
         // Get row bandwidth
@@ -71,11 +92,14 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
 
         if (rowBandwidth === 0) {
-          return row;
+          return {
+            ...row,
+            prCost: '$0.00'
+          };
         }
 
-        // PR Cost = (Node Total Cost / Total Sum of Outgoing Link Bandwidths) * Row Bandwidth
-        const prCost = (nodeTotalCost / totalBandwidth) * rowBandwidth;
+        // PR Cost = costPerUnit × Row BW
+        const prCost = costPerUnit * rowBandwidth;
         
         return {
           ...row,
@@ -83,7 +107,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         };
       });
     });
-  }, [table, nodes, edges]); // Auto-recalculate when any of these change
+  }, [table, nodes, edges, rows]); // Auto-recalculate when any of these change
 
   const addRow = () => {
     const newRow = {
