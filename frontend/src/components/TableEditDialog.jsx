@@ -291,20 +291,31 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                   <span className="font-medium">Node Total Cost:</span> ${connectionInfo.nodeTotalCost.toFixed(2)}
                 </div>
                 <div>
+                  <span className="font-medium">Node Int Cost:</span> ${connectionInfo.nodeInternetCost.toFixed(2)}/Mbps
+                </div>
+                <div>
                   <span className="font-medium">Total Outgoing BW:</span> {connectionInfo.totalOutgoingBandwidth}
                 </div>
                 <div>
                   <span className="font-medium">This Link BW:</span> {connectionInfo.linkBandwidth}
                 </div>
-                <div className="col-span-2">
+                <div>
                   <span className="font-medium">Table Total BW:</span> {connectionInfo.totalTableBandwidth}
                 </div>
               </div>
-              <div className="mt-2 p-2 bg-background/50 rounded text-xs">
-                <p className="font-medium text-foreground mb-1">Formula:</p>
-                <p className="text-muted-foreground">
-                  PR Cost = (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW
-                </p>
+              <div className="mt-2 space-y-1">
+                <div className="p-2 bg-background/50 rounded text-xs">
+                  <p className="font-medium text-foreground">PR Cost Formula:</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW × Row BW
+                  </p>
+                </div>
+                <div className="p-2 bg-background/50 rounded text-xs">
+                  <p className="font-medium text-foreground">Int Cost Formula:</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    (Node Int Cost × Link BW) × Row BW ÷ Total Table BW
+                  </p>
+                </div>
               </div>
             </div>
           )}
