@@ -131,6 +131,67 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     setRows(
       rows.map((row) => (row.id === id ? { ...row, [field]: value } : row))
     );
+    
+    // If bandwidth field changed, trigger recalculation after a short delay
+    if (field === 'bw') {
+      setTimeout(() => recalculatePRCost(), 100);
+    }
+  };
+
+  const recalculatePRCost = () => {
+    if (!table || !nodes || !edges) return;
+
+    const connectedEdge = edges.find(edge => edge.target === table.id);
+    if (!connectedEdge) return;
+
+    const sourceNode = nodes.find(n => n.id === connectedEdge.source);
+    if (!sourceNode || sourceNode.type !== 'networkNode') return;
+
+    const rent = parseFloat(sourceNode.data.rent) || 0;
+    const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
+    const nodeTotalCost = rent + carryInRent;
+
+    const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
+    let totalOutgoingBandwidth = 0;
+    outgoingEdges.forEach(outEdge => {
+      const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
+      const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+      const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+      totalOutgoingBandwidth += bandwidth;
+    });
+
+    if (totalOutgoingBandwidth === 0) return;
+
+    const linkBandwidthStr = connectedEdge.data?.bandwidth || '100 Mbps';
+    const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
+    const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
+
+    setRows(currentRows => {
+      let totalTableBandwidth = 0;
+      currentRows.forEach(row => {
+        const rowBwStr = row.bw || '0';
+        const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+        const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+        totalTableBandwidth += rowBandwidth;
+      });
+
+      if (totalTableBandwidth === 0) return currentRows;
+
+      const costPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
+
+      return currentRows.map(row => {
+        const rowBwStr = row.bw || '0';
+        const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+        const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+
+        if (rowBandwidth === 0) {
+          return { ...row, prCost: '$0.00' };
+        }
+
+        const prCost = costPerUnit * rowBandwidth;
+        return { ...row, prCost: '$' + prCost.toFixed(2) };
+      });
+    });
   };
 
   const handleSubmit = (e) => {
