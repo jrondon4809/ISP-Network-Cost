@@ -159,6 +159,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const rent = parseFloat(sourceNode.data.rent) || 0;
     const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
     const nodeTotalCost = rent + carryInRent;
+    const nodeInternetCost = parseFloat(sourceNode.data.internetCost) || 0;
 
     const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
     let totalOutgoingBandwidth = 0;
@@ -186,7 +187,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
 
       if (totalTableBandwidth === 0) return currentRows;
 
-      const costPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
+      const prCostPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
+      const intCostPerUnit = (nodeInternetCost * linkBandwidth) / totalTableBandwidth;
 
       return currentRows.map(row => {
         const rowBwStr = row.bw || '0';
@@ -194,11 +196,16 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
 
         if (rowBandwidth === 0) {
-          return { ...row, prCost: '$0.00' };
+          return { ...row, prCost: '$0.00', intCost: '$0.00' };
         }
 
-        const prCost = costPerUnit * rowBandwidth;
-        return { ...row, prCost: '$' + prCost.toFixed(2) };
+        const prCost = prCostPerUnit * rowBandwidth;
+        const intCost = intCostPerUnit * rowBandwidth;
+        return { 
+          ...row, 
+          prCost: '$' + prCost.toFixed(2),
+          intCost: '$' + intCost.toFixed(2)
+        };
       });
     });
   };
