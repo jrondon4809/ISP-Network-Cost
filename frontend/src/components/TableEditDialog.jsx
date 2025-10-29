@@ -294,9 +294,19 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             <DialogHeader>
               <DialogTitle>Edit Table</DialogTitle>
               <DialogDescription>
-                Manage table rows and data below. PR Cost and Int Cost are auto-calculated from connected node.
+                Manage table rows and data below. PR Cost, Int Cost, and EQ $/Mbps are auto-calculated from connected node.
               </DialogDescription>
             </DialogHeader>
+            <div className="mt-4">
+              <Label htmlFor="tableName" className="text-sm font-medium">Table Name</Label>
+              <Input
+                id="tableName"
+                value={tableName}
+                onChange={(e) => setTableName(e.target.value)}
+                placeholder="Enter table name"
+                className="mt-1.5"
+              />
+            </div>
           </div>
           {connectionInfo && (
             <div className="mx-6 my-3 p-3 bg-primary/5 rounded-lg border border-primary/20 flex-shrink-0">
