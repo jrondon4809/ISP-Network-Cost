@@ -162,6 +162,7 @@ export const NetworkDiagram = () => {
         rent: '0',
         carryInRent: '0',
         internetInput: '0',
+        internetType: 'input',
         internetCost: '0',
       },
     };
