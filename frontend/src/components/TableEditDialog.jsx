@@ -269,16 +269,18 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
 
   return (
     <Dialog open={!!table} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col">
-        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
-          <DialogHeader className="flex-shrink-0">
-            <DialogTitle>Edit Table</DialogTitle>
-            <DialogDescription>
-              Manage table rows and data below. PR Cost and Int Cost are auto-calculated from connected node.
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent className="sm:max-w-[900px] h-[90vh] flex flex-col p-0">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+          <div className="px-6 pt-6 flex-shrink-0">
+            <DialogHeader>
+              <DialogTitle>Edit Table</DialogTitle>
+              <DialogDescription>
+                Manage table rows and data below. PR Cost and Int Cost are auto-calculated from connected node.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
           {connectionInfo && (
-            <div className="my-3 p-3 bg-primary/5 rounded-lg border border-primary/20 flex-shrink-0">
+            <div className="mx-6 my-3 p-3 bg-primary/5 rounded-lg border border-primary/20 flex-shrink-0">
               <div className="flex items-center gap-2 mb-1">
                 <Calculator className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-foreground">Auto-Calculation Active</span>
@@ -320,15 +322,14 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             </div>
           )}
           {!connectionInfo && (
-            <div className="my-3 p-3 bg-muted/50 rounded-lg border border-border flex-shrink-0">
+            <div className="mx-6 my-3 p-3 bg-muted/50 rounded-lg border border-border flex-shrink-0">
               <p className="text-xs text-muted-foreground">
                 ⚠️ Connect this table to a node to enable automatic PR Cost calculation
               </p>
             </div>
           )}
-          <div className="flex-1 overflow-hidden min-h-0">
-            <ScrollArea className="h-full pr-4">
-              <div className="space-y-4 py-4">
+          <div className="flex-1 overflow-y-auto px-6 min-h-0" style={{scrollbarWidth: 'thin'}}>
+            <div className="space-y-4 py-4">
               {rows.map((row, index) => (
                 <div
                   key={row.id}
