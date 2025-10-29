@@ -122,7 +122,7 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
             <div className="grid gap-2">
               <Label htmlFor="internetInput" className="flex items-center gap-2">
                 <Wifi className="w-4 h-4" />
-                Internet INPUT (Mbps)
+                Internet (Mbps)
               </Label>
               <Input
                 id="internetInput"
@@ -132,6 +132,31 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
                 onChange={(e) => handleChange('internetInput', e.target.value)}
                 placeholder="Enter internet speed in Mbps"
               />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="internetType">Internet Type</Label>
+              <Select
+                value={formData.internetType}
+                onValueChange={(value) => handleChange('internetType', value)}
+              >
+                <SelectTrigger id="internetType">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="input">
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-success"></span>
+                      Internet IN (Green)
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="output">
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-destructive"></span>
+                      Internet OUT (Red)
+                    </span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="internetCost" className="flex items-center gap-2">
