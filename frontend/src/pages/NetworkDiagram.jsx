@@ -8,7 +8,7 @@ import ReactFlow, {
   MiniMap,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus, Download, Upload, Trash2, Settings } from 'lucide-react';
+import { Plus, Download, Upload, Trash2, Settings, FileSpreadsheet } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import NetworkNode from '@/components/NetworkNode';
@@ -17,6 +17,7 @@ import Toolbar from '@/components/Toolbar';
 import EdgeEditDialog from '@/components/EdgeEditDialog';
 import NodeEditDialog from '@/components/NodeEditDialog';
 import TableEditDialog from '@/components/TableEditDialog';
+import * as XLSX from 'xlsx';
 
 const nodeTypes = {
   networkNode: NetworkNode,
