@@ -91,9 +91,6 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       // Int Cost formula: (Node Int Cost × Link BW) ÷ Total Table BW
       const intCostPerUnit = (nodeInternetCost * linkBandwidth) / totalTableBandwidth;
 
-      // EQ $/Mbps formula: Node Int Cost ÷ Total Table BW
-      const eqCostPerUnit = nodeInternetCost / totalTableBandwidth;
-
       return currentRows.map(row => {
         // Get row bandwidth
         const rowBwStr = row.bw || '0';
@@ -109,10 +106,13 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           };
         }
 
-        // Calculate PR Cost, Int Cost, and EQ $/Mbps
+        // Calculate PR Cost and Int Cost
         const prCost = prCostPerUnit * rowBandwidth;
         const intCost = intCostPerUnit * rowBandwidth;
-        const eqCost = eqCostPerUnit * rowBandwidth;
+        
+        // EQ $/Mbps = Int Cost ÷ Row BW
+        const intCostValue = parseFloat(intCost.toFixed(2));
+        const eqCost = intCostValue / rowBandwidth;
         
         return {
           ...row,
