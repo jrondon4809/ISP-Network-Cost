@@ -328,6 +328,12 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                     (Node Int Cost × Link BW) × Row BW ÷ Total Table BW
                   </p>
                 </div>
+                <div className="p-2 bg-background/50 rounded text-xs">
+                  <p className="font-medium text-foreground">EQ $/Mbps Formula:</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    Node Int Cost × Row BW ÷ Total Table BW
+                  </p>
+                </div>
               </div>
             </div>
           )}
