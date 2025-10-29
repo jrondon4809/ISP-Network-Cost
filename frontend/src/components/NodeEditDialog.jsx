@@ -97,7 +97,7 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
                 placeholder="Auto-calculated from incoming link"
               />
               <p className="text-xs text-muted-foreground">
-                Formula: (Source Total Cost ÷ Total Outgoing BW) × Incoming Link BW
+                Formula: Sum of [(Source Total Cost ÷ Total Outgoing BW) × Incoming Link BW] for all incoming connections
               </p>
             </div>
             <div className="p-3 bg-primary/5 rounded-lg border border-primary/20">
