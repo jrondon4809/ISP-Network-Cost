@@ -22,7 +22,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     }
   }, [table]);
 
-  // Auto-calculate PR Cost and Int Cost whenever dialog opens or dependencies change
+  // Auto-calculate PR Cost, Int Cost, and EQ $/Mbps whenever dialog opens or dependencies change
   useEffect(() => {
     if (!table || !nodes || !edges) return;
 
@@ -46,7 +46,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
     const nodeTotalCost = rent + carryInRent;
 
-    // Get node internet cost for Int Cost
+    // Get node internet cost for Int Cost and EQ $/Mbps
     const nodeInternetCost = parseFloat(sourceNode.data.internetCost) || 0;
 
     // Find ALL outgoing edges from the source node
@@ -70,7 +70,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
     const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
 
-    // Calculate PR Cost and Int Cost for each row automatically
+    // Calculate PR Cost, Int Cost, and EQ $/Mbps for each row automatically
     setRows(currentRows => {
       // Calculate total sum of BW column in the table
       let totalTableBandwidth = 0;
@@ -91,6 +91,9 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       // Int Cost formula: (Node Int Cost × Link BW) ÷ Total Table BW
       const intCostPerUnit = (nodeInternetCost * linkBandwidth) / totalTableBandwidth;
 
+      // EQ $/Mbps formula: Node Int Cost ÷ Total Table BW
+      const eqCostPerUnit = nodeInternetCost / totalTableBandwidth;
+
       return currentRows.map(row => {
         // Get row bandwidth
         const rowBwStr = row.bw || '0';
@@ -101,18 +104,21 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           return {
             ...row,
             prCost: '$0.00',
-            intCost: '$0.00'
+            intCost: '$0.00',
+            eqCost: '$0.00'
           };
         }
 
-        // Calculate PR Cost and Int Cost
+        // Calculate PR Cost, Int Cost, and EQ $/Mbps
         const prCost = prCostPerUnit * rowBandwidth;
         const intCost = intCostPerUnit * rowBandwidth;
+        const eqCost = eqCostPerUnit * rowBandwidth;
         
         return {
           ...row,
           prCost: '$' + prCost.toFixed(2),
-          intCost: '$' + intCost.toFixed(2)
+          intCost: '$' + intCost.toFixed(2),
+          eqCost: '$' + eqCost.toFixed(2)
         };
       });
     });
