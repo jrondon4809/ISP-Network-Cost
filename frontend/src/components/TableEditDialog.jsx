@@ -428,9 +428,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                 </div>
               ))}
             </div>
-          </ScrollArea>
           </div>
-          <div className="flex-shrink-0 pt-4 border-t border-border">
+          <div className="px-6 pb-4 pt-4 border-t border-border flex-shrink-0">
             <Button
               type="button"
               variant="outline"
@@ -441,7 +440,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
               Add Row
             </Button>
           </div>
-          <DialogFooter className="flex-shrink-0 mt-4">
+          <DialogFooter className="px-6 pb-6 pt-0 flex-shrink-0">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
