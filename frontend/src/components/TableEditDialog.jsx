@@ -196,7 +196,6 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
 
       const prCostPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
       const intCostPerUnit = (nodeInternetCost * linkBandwidth) / totalTableBandwidth;
-      const eqCostPerUnit = nodeInternetCost / totalTableBandwidth;
 
       return currentRows.map(row => {
         const rowBwStr = row.bw || '0';
@@ -209,7 +208,11 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
 
         const prCost = prCostPerUnit * rowBandwidth;
         const intCost = intCostPerUnit * rowBandwidth;
-        const eqCost = eqCostPerUnit * rowBandwidth;
+        
+        // EQ $/Mbps = Int Cost ÷ Row BW
+        const intCostValue = parseFloat(intCost.toFixed(2));
+        const eqCost = intCostValue / rowBandwidth;
+        
         return { 
           ...row, 
           prCost: '$' + prCost.toFixed(2),
