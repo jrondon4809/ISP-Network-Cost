@@ -419,6 +419,16 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
+                      <Label className="text-xs">EQ $/Mbps (auto-calculated)</Label>
+                      <Input
+                        value={row.eqCost}
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
                       <Label className="text-xs">Transp Cost</Label>
                       <Input
                         value={row.transpCost}
