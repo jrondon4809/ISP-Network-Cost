@@ -323,6 +323,120 @@ export const NetworkDiagram = () => {
     toast.success('Diagram cleared');
   }, []);
 
+  const exportToExcel = useCallback(() => {
+    try {
+      // Create a new workbook
+      const wb = XLSX.utils.book_new();
+
+      // Sheet 1: Nodes Summary
+      const networkNodes = nodes.filter(n => n.type === 'networkNode');
+      const nodesData = networkNodes.map(node => ({
+        'Node Name': node.data.name || '',
+        'Rent ($)': node.data.rent || '0',
+        'Carry In Rent ($)': node.data.carryInRent || '0',
+        'Total Cost ($)': (parseFloat(node.data.rent || 0) + parseFloat(node.data.carryInRent || 0)).toFixed(2),
+        'Internet (Mbps)': node.data.internetInput || '0',
+        'Internet Type': node.data.internetType === 'output' ? 'OUT' : 'IN',
+        'Internet Cost ($/Mbps)': node.data.internetCost || '0'
+      }));
+      const wsNodes = XLSX.utils.json_to_sheet(nodesData);
+      XLSX.utils.book_append_sheet(wb, wsNodes, 'Nodes');
+
+      // Sheet 2: Links Summary
+      const linksData = edges.map(edge => {
+        const sourceNode = nodes.find(n => n.id === edge.source);
+        const targetNode = nodes.find(n => n.id === edge.target);
+        return {
+          'From': sourceNode?.data?.name || 'Unknown',
+          'To': targetNode?.data?.name || 'Unknown',
+          'Link Type': edge.data?.linkType === 'solid' ? 'Fiber OFF Net' : 
+                       edge.data?.linkType === 'dashed' ? 'Wireless ON Net' : 'Fiber ON NET',
+          'Proveedor': edge.data?.proveedor || '',
+          'Bandwidth': edge.data?.bandwidth || '100 Mbps',
+          'MRC ($)': edge.data?.mrc || ''
+        };
+      });
+      const wsLinks = XLSX.utils.json_to_sheet(linksData);
+      XLSX.utils.book_append_sheet(wb, wsLinks, 'Links');
+
+      // Sheet 3+: One sheet per table with formulas
+      const tableNodes = nodes.filter(n => n.type === 'tableNode');
+      tableNodes.forEach((tableNode, index) => {
+        const tableName = tableNode.data.name || `Table ${index + 1}`;
+        const sheetName = tableName.substring(0, 31); // Excel sheet name limit
+        
+        // Find connected node
+        const incomingEdge = edges.find(e => e.target === tableNode.id);
+        let connectedNodeName = 'N/A';
+        if (incomingEdge) {
+          const sourceNode = nodes.find(n => n.id === incomingEdge.source);
+          connectedNodeName = sourceNode?.data?.name || 'Unknown';
+        }
+
+        // Create table data with formulas
+        const tableData = [];
+        
+        // Header info
+        tableData.push(['Table Name:', tableName]);
+        tableData.push(['Connected to Node:', connectedNodeName]);
+        tableData.push([]); // Empty row
+        
+        // Column headers
+        tableData.push([
+          'Client',
+          'Service',
+          'BW',
+          'PR Cost ($)',
+          'Int Cost ($)',
+          'EQ $/Mbps ($)',
+          'Transp Cost ($)',
+          'Total Cost ($)'
+        ]);
+
+        // Data rows
+        if (tableNode.data.rows && tableNode.data.rows.length > 0) {
+          tableNode.data.rows.forEach(row => {
+            tableData.push([
+              row.client || '',
+              row.service || '',
+              row.bw || '',
+              row.prCost || '',
+              row.intCost || '',
+              row.eqCost || '',
+              row.transpCost || '',
+              row.totalCost || ''
+            ]);
+          });
+        }
+
+        const wsTable = XLSX.utils.aoa_to_sheet(tableData);
+        
+        // Set column widths
+        wsTable['!cols'] = [
+          { wch: 15 }, // Client
+          { wch: 15 }, // Service
+          { wch: 12 }, // BW
+          { wch: 12 }, // PR Cost
+          { wch: 12 }, // Int Cost
+          { wch: 15 }, // EQ $/Mbps
+          { wch: 12 }, // Transp Cost
+          { wch: 12 }  // Total Cost
+        ];
+
+        XLSX.utils.book_append_sheet(wb, wsTable, sheetName);
+      });
+
+      // Generate Excel file and download
+      const fileName = `network-diagram-${new Date().toISOString().slice(0, 10)}.xlsx`;
+      XLSX.writeFile(wb, fileName);
+      
+      toast.success('Excel file downloaded successfully');
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      toast.error('Failed to export Excel file');
+    }
+  }, [nodes, edges]);
+
   return (
     <div className="h-screen w-screen flex flex-col bg-canvas-bg">
       {/* Header */}
