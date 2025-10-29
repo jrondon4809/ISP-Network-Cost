@@ -454,6 +454,15 @@ export const NetworkDiagram = () => {
           <Button
             variant="outline"
             size="sm"
+            onClick={exportToExcel}
+            className="gap-2"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            Excel
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={importDiagram}
             className="gap-2"
           >
