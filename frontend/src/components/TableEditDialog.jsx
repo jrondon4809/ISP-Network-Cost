@@ -231,7 +231,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({ rows });
+    onSave({ rows, name: tableName });
   };
 
   // Get connection info for display
