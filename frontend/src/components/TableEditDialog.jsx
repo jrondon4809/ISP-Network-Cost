@@ -332,17 +332,18 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
               {rows.map((row, index) => (
                 <div
                   key={row.id}
-                  className="p-4 border border-border rounded-lg space-y-3 relative"
+                  id={`row-${row.id}`}
+                  className="p-4 border-2 border-border rounded-lg space-y-3 relative hover:border-primary/50 transition-colors scroll-mt-4"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-muted-foreground">
+                    <span className="text-sm font-semibold text-foreground bg-primary/10 px-2 py-1 rounded">
                       Row {index + 1}
                     </span>
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                       onClick={() => removeRow(row.id)}
                     >
                       <Trash2 className="w-4 h-4" />
