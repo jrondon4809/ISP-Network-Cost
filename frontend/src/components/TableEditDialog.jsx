@@ -434,9 +434,20 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
               >
                 <Plus className="w-4 h-4" />
                 Add Row
-              </Button>
-            </div>
-          </ScrollArea>
+              </div>
+            </ScrollArea>
+          </div>
+          <div className="flex-shrink-0 pt-4 border-t border-border">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addRow}
+              className="w-full gap-2 h-10"
+            >
+              <Plus className="w-4 h-4" />
+              Add Row
+            </Button>
+          </div>
           <DialogFooter className="flex-shrink-0 mt-4">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
