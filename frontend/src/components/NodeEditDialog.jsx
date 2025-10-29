@@ -10,6 +10,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { DollarSign, Wifi } from 'lucide-react';
 
 export const NodeEditDialog = ({ node, onSave, onClose }) => {
@@ -18,6 +25,7 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
     rent: '',
     carryInRent: '',
     internetInput: '',
+    internetType: 'input',
     internetCost: '',
   });
 
@@ -28,6 +36,7 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
         rent: node.data.rent || '',
         carryInRent: node.data.carryInRent || '',
         internetInput: node.data.internetInput || '',
+        internetType: node.data.internetType || 'input',
         internetCost: node.data.internetCost || '',
       });
     }
