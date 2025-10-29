@@ -179,6 +179,7 @@ export const NetworkDiagram = () => {
         y: Math.random() * 300 + 100,
       },
       data: {
+        name: 'Data Table',
         rows: [
           {
             id: 1,
