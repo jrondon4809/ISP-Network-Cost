@@ -15,10 +15,16 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
   const [rows, setRows] = useState([]);
+  const [tableName, setTableName] = useState('');
 
   useEffect(() => {
     if (table?.data?.rows) {
       setRows(table.data.rows);
+    }
+    if (table?.data?.name) {
+      setTableName(table.data.name);
+    } else {
+      setTableName('Data Table');
     }
   }, [table]);
 
