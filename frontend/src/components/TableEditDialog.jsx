@@ -270,11 +270,11 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
   return (
     <Dialog open={!!table} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col">
-        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
           <DialogHeader className="flex-shrink-0">
             <DialogTitle>Edit Table</DialogTitle>
             <DialogDescription>
-              Manage table rows and data below. PR Cost is auto-calculated from connected node.
+              Manage table rows and data below. PR Cost and Int Cost are auto-calculated from connected node.
             </DialogDescription>
           </DialogHeader>
           {connectionInfo && (
@@ -326,8 +326,9 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
               </p>
             </div>
           )}
-          <ScrollArea className="flex-1 pr-4 max-h-[50vh]">
-            <div className="space-y-4 py-4">
+          <div className="flex-1 overflow-hidden min-h-0">
+            <ScrollArea className="h-full pr-4">
+              <div className="space-y-4 py-4">
               {rows.map((row, index) => (
                 <div
                   key={row.id}
