@@ -8,6 +8,11 @@ export const NetworkNode = ({ data, selected }) => {
   const carryInRent = parseFloat(data.carryInRent) || 0;
   const totalCost = rent + carryInRent;
   
+  // Determine internet color based on type
+  const internetColorClass = data.internetType === 'output' 
+    ? 'bg-destructive/10 border-destructive/20 text-destructive' 
+    : 'bg-success/10 border-success/20 text-success';
+  
   return (
     <div
       className={`
@@ -52,9 +57,9 @@ export const NetworkNode = ({ data, selected }) => {
               {totalCost.toFixed(2)}
             </span>
           </div>
-          <div className="flex items-center justify-between gap-2 p-1.5 bg-success/10 rounded border border-success/20">
-            <span className="text-success font-medium">Internet:</span>
-            <span className="font-medium text-success flex items-center gap-1">
+          <div className={`flex items-center justify-between gap-2 p-1.5 rounded border ${internetColorClass}`}>
+            <span className="font-medium">Internet {data.internetType === 'output' ? 'OUT' : 'IN'}:</span>
+            <span className="font-medium flex items-center gap-1">
               <Wifi className="w-3 h-3" />
               {data.internetInput || '0'} Mbps
             </span>
