@@ -19,10 +19,10 @@ export const TableNode = ({ data, selected }) => {
       
       <div className="p-3">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 rounded-lg bg-success/10 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-success/10 flex items-center justify-center flex-shrink-0">
             <Table className="w-4 h-4 text-success" />
           </div>
-          <h3 className="text-sm font-semibold text-foreground">Data Table</h3>
+          <h3 className="text-sm font-semibold text-foreground truncate">{data.name || 'Data Table'}</h3>
         </div>
         
         <div className="overflow-x-auto">
