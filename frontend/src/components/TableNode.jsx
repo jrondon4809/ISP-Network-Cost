@@ -34,6 +34,7 @@ export const TableNode = ({ data, selected }) => {
                 <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">BW</th>
                 <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">PR Cost</th>
                 <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Int Cost</th>
+                <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">EQ $/Mbps</th>
                 <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Transp Cost</th>
                 <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Total</th>
               </tr>
@@ -46,6 +47,7 @@ export const TableNode = ({ data, selected }) => {
                   <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.bw}</td>
                   <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.prCost}</td>
                   <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.intCost}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.eqCost}</td>
                   <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.transpCost}</td>
                   <td className="px-2 py-1.5 font-medium text-foreground whitespace-nowrap">{row.totalCost}</td>
                 </tr>
