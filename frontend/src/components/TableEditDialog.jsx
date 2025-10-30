@@ -509,6 +509,16 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                         placeholder="Auto-calculated"
                       />
                     </div>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">EQ Trans (auto-calculated)</Label>
+                      <Input
+                        value={row.eqTrans}
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
+                      />
+                    </div>
                     <div className="grid gap-1.5 col-span-2">
                       <Label className="text-xs">Total Cost</Label>
                       <Input
