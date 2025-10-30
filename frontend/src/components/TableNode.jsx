@@ -47,7 +47,12 @@ export const TableNode = ({ data, selected }) => {
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">EQ $/Mbps</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Transp Cost</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">EQ Trans</th>
-                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Total</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Gast F</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">CTotal</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">EQ Total</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Price</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Profit</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">%Rent</th>
                 </tr>
               </thead>
               <tbody>
@@ -61,7 +66,12 @@ export const TableNode = ({ data, selected }) => {
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.eqCost}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.transpCost}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.eqTrans}</td>
-                    <td className="px-2 py-1.5 font-medium text-foreground whitespace-nowrap">{row.totalCost}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.gastF}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.cTotal}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.eqTotal}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.price}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.profit}</td>
+                    <td className="px-2 py-1.5 font-medium text-foreground whitespace-nowrap">{row.rentPercent}</td>
                   </tr>
                 ))}
               </tbody>
