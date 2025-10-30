@@ -318,6 +318,16 @@ export const NetworkDiagram = () => {
     toast.success('Table updated successfully');
   }, []);
 
+  const updateCompany = useCallback((nodeId, newData) => {
+    setNodes((nds) =>
+      nds.map((node) =>
+        node.id === nodeId ? { ...node, data: newData } : node
+      )
+    );
+    setSelectedCompany(null);
+    toast.success('Company updated successfully');
+  }, []);
+
   const exportDiagram = useCallback(() => {
     const data = {
       nodes,
