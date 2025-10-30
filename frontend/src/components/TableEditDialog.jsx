@@ -184,6 +184,11 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const nodeTotalCost = rent + carryInRent;
     const nodeInternetCost = parseFloat(sourceNode.data.internetCost) || 0;
 
+    // Get link MRC for Transp Cost calculation
+    const linkMrcStr = connectedEdge.data?.mrc || '$0';
+    const linkMrcMatch = linkMrcStr.match(/(\d+(?:\.\d+)?)/);
+    const linkMrc = linkMrcMatch ? parseFloat(linkMrcMatch[1]) : 0;
+
     const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
     let totalOutgoingBandwidth = 0;
     outgoingEdges.forEach(outEdge => {
@@ -219,7 +224,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
 
         if (rowBandwidth === 0) {
-          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00' };
+          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00' };
         }
 
         const prCost = prCostPerUnit * rowBandwidth;
@@ -229,6 +234,19 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const intCostValue = parseFloat(intCost.toFixed(2));
         const eqCost = intCostValue / rowBandwidth;
         
+        // Transp Cost formula: Link MRC × Row BW ÷ Total Table BW
+        const transpCost = (linkMrc * rowBandwidth) / totalTableBandwidth;
+        
+        return { 
+          ...row, 
+          prCost: '$' + prCost.toFixed(2),
+          intCost: '$' + intCost.toFixed(2),
+          eqCost: '$' + eqCost.toFixed(2),
+          transpCost: '$' + transpCost.toFixed(2)
+        };
+      });
+    });
+  };
         return { 
           ...row, 
           prCost: '$' + prCost.toFixed(2),
