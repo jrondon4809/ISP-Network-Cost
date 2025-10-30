@@ -179,8 +179,13 @@ export const NetworkDiagram = () => {
         x: Math.random() * 400 + 100,
         y: Math.random() * 300 + 100,
       },
+      style: {
+        width: 800,
+        height: 200,
+      },
       data: {
         name: 'Data Table',
+        maxVisibleRows: 3,
         rows: [
           {
             id: 1,
