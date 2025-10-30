@@ -191,6 +191,7 @@ export const NetworkDiagram = () => {
             intCost: '$30',
             eqCost: '$25',
             transpCost: '$20',
+            eqTrans: '$0.20',
             totalCost: '$125',
           },
         ],
@@ -199,6 +200,7 @@ export const NetworkDiagram = () => {
     setNodes((nds) => [...nds, newTable]);
     toast.success('Table added successfully');
   }, []);
+
 
   const deleteSelected = useCallback(() => {
     setNodes((nds) => nds.filter((node) => !node.selected));
