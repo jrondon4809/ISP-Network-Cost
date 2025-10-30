@@ -616,14 +616,13 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">Gast F</Label>
+                      <Label className="text-xs">Gast F (auto-calculated)</Label>
                       <Input
                         value={row.gastF}
-                        onChange={(e) =>
-                          updateRow(row.id, 'gastF', e.target.value)
-                        }
-                        placeholder="Gast F"
-                        className="h-9"
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
                       />
                     </div>
                     <div className="grid gap-1.5">
