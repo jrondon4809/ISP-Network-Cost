@@ -229,14 +229,47 @@ export const NetworkDiagram = () => {
     });
   }, []);
 
+  // Helper function to recalculate ALL tables in the network
+  const recalculateAllTables = useCallback((allNodes, allEdges) => {
+    const allTables = allNodes.filter(node => node.type === 'tableNode');
+    
+    return allNodes.map(node => {
+      if (node.type === 'tableNode') {
+        const recalculatedRows = recalculateTableRows(node, allNodes, allEdges);
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            rows: recalculatedRows
+          }
+        };
+      }
+      return node;
+    });
+  }, [recalculateTableRows]);
+
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     []
   );
 
   const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
+    (changes) => {
+      // Check if any edges are being removed
+      const hasRemovals = changes.some(change => change.type === 'remove');
+      
+      setEdges((eds) => {
+        const updatedEdges = applyEdgeChanges(changes, eds);
+        
+        // If edges were removed, recalculate all tables
+        if (hasRemovals) {
+          setNodes((currentNodes) => recalculateAllTables(currentNodes, updatedEdges));
+        }
+        
+        return updatedEdges;
+      });
+    },
+    [recalculateAllTables]
   );
 
   const onConnect = useCallback(
@@ -253,10 +286,19 @@ export const NetworkDiagram = () => {
           linkType: 'solid'
         }
       };
-      setEdges((eds) => addEdge(newEdge, eds));
+      
+      setEdges((eds) => {
+        const updatedEdges = addEdge(newEdge, eds);
+        
+        // Recalculate all tables when a new connection is made
+        setNodes((currentNodes) => recalculateAllTables(currentNodes, updatedEdges));
+        
+        return updatedEdges;
+      });
+      
       toast.success('Link created successfully');
     },
-    []
+    [recalculateAllTables]
   );
 
   const addNode = useCallback(() => {
