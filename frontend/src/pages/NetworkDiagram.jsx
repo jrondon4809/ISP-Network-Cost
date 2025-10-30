@@ -404,8 +404,8 @@ export const NetworkDiagram = () => {
   }, [recalculateTableRows]);
 
   const updateEdge = useCallback((edgeId, newData) => {
-    setEdges((eds) =>
-      eds.map((edge) => {
+    setEdges((eds) => {
+      const updatedEdges = eds.map((edge) => {
         if (edge.id === edgeId) {
           let style = { strokeWidth: 2 };
           let animated = true; // All link types are now animated
@@ -437,11 +437,41 @@ export const NetworkDiagram = () => {
           };
         }
         return edge;
-      })
-    );
+      });
+
+      // Find the updated edge
+      const updatedEdge = updatedEdges.find(e => e.id === edgeId);
+      
+      // If this edge connects to a table, recalculate that table
+      if (updatedEdge && updatedEdge.target) {
+        setNodes((currentNodes) => {
+          const targetTable = currentNodes.find(n => n.id === updatedEdge.target && n.type === 'tableNode');
+          
+          if (targetTable) {
+            const recalculatedRows = recalculateTableRows(targetTable, currentNodes, updatedEdges);
+            return currentNodes.map(node => {
+              if (node.id === targetTable.id) {
+                return {
+                  ...node,
+                  data: {
+                    ...node.data,
+                    rows: recalculatedRows
+                  }
+                };
+              }
+              return node;
+            });
+          }
+          
+          return currentNodes;
+        });
+      }
+
+      return updatedEdges;
+    });
     setSelectedEdge(null);
     toast.success('Link updated successfully');
-  }, []);
+  }, [recalculateTableRows]);
 
   const updateTable = useCallback((nodeId, newData) => {
     setNodes((nds) =>
