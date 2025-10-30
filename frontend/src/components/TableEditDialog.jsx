@@ -247,15 +247,6 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       });
     });
   };
-        return { 
-          ...row, 
-          prCost: '$' + prCost.toFixed(2),
-          intCost: '$' + intCost.toFixed(2),
-          eqCost: '$' + eqCost.toFixed(2)
-        };
-      });
-    });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
