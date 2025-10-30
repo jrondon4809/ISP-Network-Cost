@@ -319,7 +319,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             <DialogHeader>
               <DialogTitle>Edit Table</DialogTitle>
               <DialogDescription>
-                Manage table rows and data below. PR Cost, Int Cost, and EQ $/Mbps are auto-calculated from connected node.
+                Manage table rows and data below. PR Cost, Int Cost, EQ $/Mbps, and Transp Cost are auto-calculated from connected node and link.
               </DialogDescription>
             </DialogHeader>
             <div className="mt-4">
@@ -350,12 +350,15 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                   <span className="font-medium">Node Int Cost:</span> ${connectionInfo.nodeInternetCost.toFixed(2)}/Mbps
                 </div>
                 <div>
+                  <span className="font-medium">Link MRC:</span> ${connectionInfo.linkMrc.toFixed(2)}
+                </div>
+                <div>
                   <span className="font-medium">Total Outgoing BW:</span> {connectionInfo.totalOutgoingBandwidth}
                 </div>
                 <div>
                   <span className="font-medium">This Link BW:</span> {connectionInfo.linkBandwidth}
                 </div>
-                <div>
+                <div className="col-span-2">
                   <span className="font-medium">Table Total BW:</span> {connectionInfo.totalTableBandwidth}
                 </div>
               </div>
