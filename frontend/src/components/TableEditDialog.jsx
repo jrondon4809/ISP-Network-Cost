@@ -189,10 +189,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       eqTrans: '$0.00',
       gastF: '',
       cTotal: '$0.00',
-      eqTotal: '',
+      eqTotal: '$0.00',
       price: '',
-      profit: '',
-      rentPercent: '',
+      profit: '$0.00',
+      rentPercent: '0.00%',
     };
     setRows([...rows, newRow]);
   };
