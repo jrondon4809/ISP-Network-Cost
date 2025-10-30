@@ -482,14 +482,13 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">Transp Cost</Label>
+                      <Label className="text-xs">Transp Cost (auto-calculated)</Label>
                       <Input
                         value={row.transpCost}
-                        onChange={(e) =>
-                          updateRow(row.id, 'transpCost', e.target.value)
-                        }
-                        placeholder="Transport cost"
-                        className="h-9"
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
                       />
                     </div>
                     <div className="grid gap-1.5 col-span-2">
