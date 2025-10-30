@@ -215,6 +215,30 @@ export const NetworkDiagram = () => {
     toast.success('Table added successfully');
   }, []);
 
+  const addCompany = useCallback(() => {
+    // Check if company node already exists
+    const companyExists = nodes.some(node => node.type === 'companyNode');
+    if (companyExists) {
+      toast.error('Company node already exists. Only one company node is allowed.');
+      return;
+    }
+
+    const newCompany = {
+      id: 'company-1',
+      type: 'companyNode',
+      position: {
+        x: 100,
+        y: 100,
+      },
+      data: {
+        totalExpenses: 0,
+        totalBW: 0,
+      },
+    };
+    setNodes((nds) => [...nds, newCompany]);
+    toast.success('Company node added successfully');
+  }, [nodes]);
+
 
   const deleteSelected = useCallback(() => {
     setNodes((nds) => nds.filter((node) => !node.selected));
