@@ -186,8 +186,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       rows.map((row) => (row.id === id ? { ...row, [field]: value } : row))
     );
     
-    // If bandwidth field changed, trigger recalculation after a short delay
-    if (field === 'bw') {
+    // If bandwidth or gastF field changed, trigger recalculation after a short delay
+    if (field === 'bw' || field === 'gastF') {
       setTimeout(() => recalculatePRCost(), 100);
     }
   };
