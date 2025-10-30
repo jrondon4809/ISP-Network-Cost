@@ -246,7 +246,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
 
         if (rowBandwidth === 0) {
-          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00', eqTrans: '$0.00' };
+          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00', eqTrans: '$0.00', cTotal: '$0.00' };
         }
 
         const prCost = prCostPerUnit * rowBandwidth;
@@ -262,6 +262,14 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         // EQ Trans formula: Transp Cost ÷ Row BW
         const transpCostValue = parseFloat(transpCost.toFixed(2));
         const eqTrans = transpCostValue / rowBandwidth;
+        
+        // Get Gast F value (parse numeric value from string)
+        const gastFStr = row.gastF || '$0';
+        const gastFMatch = gastFStr.match(/(\d+(?:\.\d+)?)/);
+        const gastF = gastFMatch ? parseFloat(gastFMatch[1]) : 0;
+        
+        // CTotal formula: PR Cost + Int Cost + Trans + Gast F
+        const cTotal = prCost + intCost + transpCost + gastF;
         
         return { 
           ...row, 
