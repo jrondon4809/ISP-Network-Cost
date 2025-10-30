@@ -115,7 +115,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             intCost: '$0.00',
             eqCost: '$0.00',
             transpCost: '$0.00',
-            eqTrans: '$0.00'
+            eqTrans: '$0.00',
+            cTotal: '$0.00'
           };
         }
 
@@ -134,13 +135,22 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const transpCostValue = parseFloat(transpCost.toFixed(2));
         const eqTrans = transpCostValue / rowBandwidth;
         
+        // Get Gast F value (parse numeric value from string)
+        const gastFStr = row.gastF || '$0';
+        const gastFMatch = gastFStr.match(/(\d+(?:\.\d+)?)/);
+        const gastF = gastFMatch ? parseFloat(gastFMatch[1]) : 0;
+        
+        // CTotal formula: PR Cost + Int Cost + Trans + Gast F
+        const cTotal = prCost + intCost + transpCost + gastF;
+        
         return {
           ...row,
           prCost: '$' + prCost.toFixed(2),
           intCost: '$' + intCost.toFixed(2),
           eqCost: '$' + eqCost.toFixed(2),
           transpCost: '$' + transpCost.toFixed(2),
-          eqTrans: '$' + eqTrans.toFixed(2)
+          eqTrans: '$' + eqTrans.toFixed(2),
+          cTotal: '$' + cTotal.toFixed(2)
         };
       });
     });
