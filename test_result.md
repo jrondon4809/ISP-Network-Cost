@@ -173,11 +173,11 @@ frontend:
     file: "/app/frontend/src/components/EdgeEditDialog.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
-        comment: "Three link types: Fiber OFF Net (solid blue), Wireless ON Net (dashed green), Fiber ON NET (animated purple arrow)"
+        comment: "Three link types: Fiber OFF Net (animated solid blue), Wireless ON Net (animated dashed green), Fiber ON NET (animated purple arrow). All links are now animated as per user request."
 
   - task: "Edge edit dialog"
     implemented: true
