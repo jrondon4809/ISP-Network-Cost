@@ -603,13 +603,13 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">Price</Label>
+                      <Label className="text-xs">Price ($)</Label>
                       <Input
                         value={row.price}
                         onChange={(e) =>
                           updateRow(row.id, 'price', e.target.value)
                         }
-                        placeholder="Price"
+                        placeholder="e.g., $500"
                         className="h-9"
                       />
                     </div>
