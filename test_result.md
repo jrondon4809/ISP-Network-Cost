@@ -209,11 +209,11 @@ frontend:
     file: "/app/frontend/src/components/TableEditDialog.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
-        comment: "Complex edit dialog with add/remove rows, auto-calculation of PR Cost, Int Cost, and EQ $/Mbps based on connected node"
+        comment: "Complex edit dialog with add/remove rows, auto-calculation of PR Cost, Int Cost, EQ $/Mbps, and Transp Cost based on connected node and link. Transp Cost formula: Link MRC × Row BW ÷ Total Table BW"
 
   - task: "Export/Import functionality"
     implemented: true
