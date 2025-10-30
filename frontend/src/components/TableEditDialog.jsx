@@ -531,7 +531,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">Transp Cost (auto-calculated)</Label>
+                      <Label className="text-xs">Trans (auto-calculated)</Label>
                       <Input
                         value={row.transpCost}
                         readOnly
