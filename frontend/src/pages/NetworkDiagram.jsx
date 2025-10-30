@@ -505,6 +505,15 @@ export const NetworkDiagram = () => {
           <Button
             variant="outline"
             size="sm"
+            onClick={addCompany}
+            className="gap-2"
+          >
+            <Building2 className="w-4 h-4" />
+            Add Company
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={exportToExcel}
             className="gap-2"
           >
