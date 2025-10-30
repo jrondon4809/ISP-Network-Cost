@@ -82,7 +82,7 @@ export const TableNode = ({ data, selected }) => {
                   <tr key={row.id || index} className="border-t border-border">
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.client}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.service}</td>
-                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.bw}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{formatBW(row.bw)}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.prCost}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.intCost}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.eqCost}</td>
@@ -91,7 +91,7 @@ export const TableNode = ({ data, selected }) => {
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.gastF}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.cTotal}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.eqTotal}</td>
-                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.price}</td>
+                    <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{formatPrice(row.price)}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.profit}</td>
                     <td className="px-2 py-1.5 font-medium text-foreground whitespace-nowrap">{row.rentPercent}</td>
                   </tr>
