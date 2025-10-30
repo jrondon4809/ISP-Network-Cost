@@ -660,11 +660,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       <Label className="text-xs">%Rent (auto-calculated)</Label>
                       <Input
                         value={row.rentPercent}
-                        onChange={(e) =>
-                          updateRow(row.id, 'rentPercent', e.target.value)
-                        }
-                        placeholder="%Rent"
-                        className="h-9"
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
                       />
                     </div>
                   </div>
