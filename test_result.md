@@ -201,7 +201,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Tables display Client, Service, BW, PR Cost, Int Cost, EQ $/Mbps, Transp Cost, EQ Trans, Total Cost (9 columns total, exceeds requirement of 6). Added EQ Trans column which auto-calculates as Transp Cost ÷ Row BW. Tables are now resizable - users can drag edges to enlarge/shrink tables. Columns scroll horizontally when table is too small."
+        comment: "Tables now display 14 columns: Client, Service, BW, PR Cost (auto), Int Cost (auto), EQ $/Mbps (auto), Transp Cost (auto), EQ Trans (auto), Gast F, CTotal, EQ Total, Price, Profit, %Rent. Removed 'Total' column and added 6 new columns as requested. Tables are resizable."
 
   - task: "Table edit dialog with auto-calculations"
     implemented: true
