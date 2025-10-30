@@ -447,67 +447,17 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                   <span className="font-medium">Table Total BW:</span> {connectionInfo.totalTableBandwidth}
                 </div>
               </div>
-              <div className="mt-2 space-y-1">
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">PR Cost Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW × Row BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">Int Cost Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    (Node Int Cost × Link BW) × Row BW ÷ Total Table BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">EQ $/Mbps Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    Row Int Cost ÷ Row BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">Trans Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    Link MRC × Row BW ÷ Total Table BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">EQ Trans Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    Row Trans ÷ Row BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">Gast F Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    Company Expenses/Mbps × Link BW ÷ Total Table BW × Row BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">CTotal Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    Row PR Cost + Row Int Cost + Row Trans + Row Gast F
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">EQ Total Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    CTotal ÷ Row BW
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">Profit Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    Row Price - CTotal
-                  </p>
-                </div>
-                <div className="p-2 bg-background/50 rounded text-xs">
-                  <p className="font-medium text-foreground">%Rent Formula:</p>
-                  <p className="text-muted-foreground text-[11px]">
-                    (Row Profit ÷ Row Price) × 100
-                  </p>
-                </div>
+              <div className="mt-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowFormulas(true)}
+                  className="w-full gap-2"
+                >
+                  <Calculator className="w-4 h-4" />
+                  View All Formulas
+                </Button>
               </div>
             </div>
           )}
