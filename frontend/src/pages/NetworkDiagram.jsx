@@ -135,7 +135,7 @@ export const NetworkDiagram = () => {
       const newEdge = {
         ...params,
         type: 'default',
-        animated: false,
+        animated: true,
         style: { stroke: 'hsl(var(--link-solid))', strokeWidth: 2 },
         data: {
           proveedor: 'New Provider',
