@@ -277,6 +277,11 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const nodeTotalCost = rent + carryInRent;
     const nodeInternetCost = parseFloat(sourceNode.data.internetCost) || 0;
     
+    // Get link MRC
+    const linkMrcStr = connectedEdge.data?.mrc || '$0';
+    const linkMrcMatch = linkMrcStr.match(/(\d+(?:\.\d+)?)/);
+    const linkMrc = linkMrcMatch ? parseFloat(linkMrcMatch[1]) : 0;
+    
     // Calculate total sum of all outgoing link bandwidths from source node
     const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
     let totalOutgoingBandwidth = 0;
@@ -305,6 +310,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       nodeName: sourceNode.data.name,
       nodeTotalCost,
       nodeInternetCost,
+      linkMrc,
       totalOutgoingBandwidth: `${totalOutgoingBandwidth} Mbps (sum of ${outgoingEdges.length} outgoing links)`,
       linkBandwidth: `${linkBandwidth} Mbps`,
       totalTableBandwidth: `${totalTableBandwidth} Mbps`,
