@@ -267,3 +267,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Application already fully implemented with all requested features. Services are running. Frontend on port 3000, Backend on port 8001. Ready for user testing and feedback."
+  - agent: "main"
+    message: "Updated link animations: All three link types (solid blue, dashed green, arrow purple) are now animated as per user request. Changes applied to NetworkDiagram.jsx"
