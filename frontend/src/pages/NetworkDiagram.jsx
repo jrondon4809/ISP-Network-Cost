@@ -124,6 +124,111 @@ export const NetworkDiagram = () => {
     calculateCarryIn();
   }, [edges, nodes.length]); // Recalculate when edges change or nodes are added/removed
 
+  // Helper function to recalculate a single table's row values
+  const recalculateTableRows = useCallback((table, allNodes, allEdges) => {
+    const connectedEdge = allEdges.find(edge => edge.target === table.id);
+    if (!connectedEdge) return table.data.rows;
+
+    const sourceNode = allNodes.find(n => n.id === connectedEdge.source);
+    if (!sourceNode || sourceNode.type !== 'networkNode') return table.data.rows;
+
+    // Find company node
+    const companyNode = allNodes.find(n => n.type === 'companyNode');
+    const companyExpensesPerMbps = companyNode 
+      ? (parseFloat(companyNode.data.totalExpenses) || 0) / (parseFloat(companyNode.data.totalBW) || 1)
+      : 0;
+
+    const rent = parseFloat(sourceNode.data.rent) || 0;
+    const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
+    const nodeTotalCost = rent + carryInRent;
+    const nodeInternetCost = parseFloat(sourceNode.data.internetCost) || 0;
+
+    const linkMrcStr = connectedEdge.data?.mrc || '$0';
+    const linkMrcMatch = linkMrcStr.match(/(\d+(?:\.\d+)?)/);
+    const linkMrc = linkMrcMatch ? parseFloat(linkMrcMatch[1]) : 0;
+
+    const outgoingEdges = allEdges.filter(e => e.source === sourceNode.id);
+    let totalOutgoingBandwidth = 0;
+    outgoingEdges.forEach(outEdge => {
+      const bandwidthStr = outEdge.data?.bandwidth || '100 Mbps';
+      const bandwidthMatch = bandwidthStr.match(/(\d+(?:\.\d+)?)/);
+      const bandwidth = bandwidthMatch ? parseFloat(bandwidthMatch[1]) : 100;
+      totalOutgoingBandwidth += bandwidth;
+    });
+
+    if (totalOutgoingBandwidth === 0) return table.data.rows;
+
+    const linkBandwidthStr = connectedEdge.data?.bandwidth || '100 Mbps';
+    const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
+    const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
+
+    let totalTableBandwidth = 0;
+    table.data.rows.forEach(row => {
+      const rowBwStr = row.bw || '0';
+      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+      totalTableBandwidth += rowBandwidth;
+    });
+
+    if (totalTableBandwidth === 0) return table.data.rows;
+
+    const prCostPerUnit = (nodeTotalCost / totalOutgoingBandwidth) * linkBandwidth / totalTableBandwidth;
+    const intCostPerUnit = (nodeInternetCost * linkBandwidth) / totalTableBandwidth;
+
+    return table.data.rows.map(row => {
+      const rowBwStr = row.bw || '0';
+      const rowBwMatch = rowBwStr.match(/(\d+(?:\.\d+)?)/);
+      const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
+
+      if (rowBandwidth === 0) {
+        return {
+          ...row,
+          prCost: '$0.00',
+          intCost: '$0.00',
+          eqCost: '$0.00',
+          transpCost: '$0.00',
+          eqTrans: '$0.00',
+          gastF: '$0.00',
+          cTotal: '$0.00',
+          eqTotal: '$0.00',
+          profit: '$0.00',
+          rentPercent: '0.00%'
+        };
+      }
+
+      const prCost = prCostPerUnit * rowBandwidth;
+      const intCost = intCostPerUnit * rowBandwidth;
+      const intCostValue = parseFloat(intCost.toFixed(2));
+      const eqCost = intCostValue / rowBandwidth;
+      const transpCost = (linkMrc * rowBandwidth) / totalTableBandwidth;
+      const transpCostValue = parseFloat(transpCost.toFixed(2));
+      const eqTrans = transpCostValue / rowBandwidth;
+      const gastF = companyExpensesPerMbps * linkBandwidth / totalTableBandwidth * rowBandwidth;
+      const cTotal = prCost + intCost + transpCost + gastF;
+      const eqTotal = rowBandwidth > 0 ? cTotal / rowBandwidth : 0;
+
+      const priceStr = row.price || '$0';
+      const priceMatch = priceStr.match(/(\d+(?:\.\d+)?)/);
+      const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
+      const profit = price - cTotal;
+      const rentPercent = price > 0 ? (profit / price) * 100 : 0;
+
+      return {
+        ...row,
+        prCost: '$' + prCost.toFixed(2),
+        intCost: '$' + intCost.toFixed(2),
+        eqCost: '$' + eqCost.toFixed(2),
+        transpCost: '$' + transpCost.toFixed(2),
+        eqTrans: '$' + eqTrans.toFixed(2),
+        gastF: '$' + gastF.toFixed(2),
+        cTotal: '$' + cTotal.toFixed(2),
+        eqTotal: '$' + eqTotal.toFixed(2),
+        profit: '$' + profit.toFixed(2),
+        rentPercent: rentPercent.toFixed(2) + '%'
+      };
+    });
+  }, []);
+
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     []
