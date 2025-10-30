@@ -28,7 +28,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     }
   }, [table]);
 
-  // Auto-calculate PR Cost, Int Cost, and EQ $/Mbps whenever dialog opens or dependencies change
+  // Auto-calculate PR Cost, Int Cost, EQ $/Mbps, and Transp Cost whenever dialog opens or dependencies change
   useEffect(() => {
     if (!table || !nodes || !edges) return;
 
@@ -55,6 +55,11 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     // Get node internet cost for Int Cost and EQ $/Mbps
     const nodeInternetCost = parseFloat(sourceNode.data.internetCost) || 0;
 
+    // Get link MRC for Transp Cost calculation
+    const linkMrcStr = edge.data?.mrc || '$0';
+    const linkMrcMatch = linkMrcStr.match(/(\d+(?:\.\d+)?)/);
+    const linkMrc = linkMrcMatch ? parseFloat(linkMrcMatch[1]) : 0;
+
     // Find ALL outgoing edges from the source node
     const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
     
@@ -76,7 +81,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
     const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
 
-    // Calculate PR Cost, Int Cost, and EQ $/Mbps for each row automatically
+    // Calculate PR Cost, Int Cost, EQ $/Mbps, and Transp Cost for each row automatically
     setRows(currentRows => {
       // Calculate total sum of BW column in the table
       let totalTableBandwidth = 0;
@@ -108,7 +113,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             ...row,
             prCost: '$0.00',
             intCost: '$0.00',
-            eqCost: '$0.00'
+            eqCost: '$0.00',
+            transpCost: '$0.00'
           };
         }
 
@@ -120,11 +126,15 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const intCostValue = parseFloat(intCost.toFixed(2));
         const eqCost = intCostValue / rowBandwidth;
         
+        // Transp Cost formula: Link MRC × Row BW ÷ Total Table BW
+        const transpCost = (linkMrc * rowBandwidth) / totalTableBandwidth;
+        
         return {
           ...row,
           prCost: '$' + prCost.toFixed(2),
           intCost: '$' + intCost.toFixed(2),
-          eqCost: '$' + eqCost.toFixed(2)
+          eqCost: '$' + eqCost.toFixed(2),
+          transpCost: '$' + transpCost.toFixed(2)
         };
       });
     });
