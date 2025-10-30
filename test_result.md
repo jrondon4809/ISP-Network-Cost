@@ -273,3 +273,5 @@ agent_communication:
     message: "Added auto-calculation for Transp Cost in tables. Formula: Link MRC × Row BW ÷ Total Table BW. Updated TableEditDialog.jsx to automatically calculate and display Transp Cost based on the connected link's MRC value. Field is now read-only with auto-calculation."
   - agent: "main"
     message: "Added new column EQ Trans to tables. Formula: Row Transp Cost ÷ Row BW. This column is auto-calculated and read-only. Updated TableEditDialog.jsx, TableNode.jsx, and NetworkDiagram.jsx. Tables now have 9 columns total."
+  - agent: "main"
+    message: "Made tables resizable in the canvas. Users can now drag the edges/corners of table nodes to resize them. When tables are small, columns scroll horizontally. When enlarged, all columns become visible. Added NodeResizer from ReactFlow with green resize handles when table is selected. Min width: 300px, min height: 150px. Default size: 800x200px."
