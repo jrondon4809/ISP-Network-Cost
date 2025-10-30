@@ -269,3 +269,5 @@ agent_communication:
     message: "Application already fully implemented with all requested features. Services are running. Frontend on port 3000, Backend on port 8001. Ready for user testing and feedback."
   - agent: "main"
     message: "Updated link animations: All three link types (solid blue, dashed green, arrow purple) are now animated as per user request. Changes applied to NetworkDiagram.jsx"
+  - agent: "main"
+    message: "Added auto-calculation for Transp Cost in tables. Formula: Link MRC × Row BW ÷ Total Table BW. Updated TableEditDialog.jsx to automatically calculate and display Transp Cost based on the connected link's MRC value. Field is now read-only with auto-calculation."
