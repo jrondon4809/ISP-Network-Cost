@@ -403,7 +403,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             <DialogHeader>
               <DialogTitle>Edit Table</DialogTitle>
               <DialogDescription>
-                Manage table rows and data below. PR Cost, Int Cost, EQ $/Mbps, Trans, EQ Trans, CTotal, EQ Total, Profit, and %Rent are auto-calculated from connected node and link.
+                Manage table rows and data below. PR Cost, Int Cost, EQ $/Mbps, Trans, EQ Trans, Gast F, CTotal, EQ Total, Profit, and %Rent are auto-calculated from connected node, link, and company.
               </DialogDescription>
             </DialogHeader>
             <div className="mt-4">
