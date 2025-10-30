@@ -28,7 +28,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     }
   }, [table]);
 
-  // Auto-calculate PR Cost, Int Cost, EQ $/Mbps, and Transp Cost whenever dialog opens or dependencies change
+  // Auto-calculate PR Cost, Int Cost, EQ $/Mbps, Transp Cost, and Gast F whenever dialog opens or dependencies change
   useEffect(() => {
     if (!table || !nodes || !edges) return;
 
@@ -46,6 +46,12 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     if (!sourceNode || sourceNode.type !== 'networkNode') {
       return;
     }
+
+    // Find company node for Gast F calculation
+    const companyNode = nodes.find(n => n.type === 'companyNode');
+    const companyExpensesPerMbps = companyNode 
+      ? (parseFloat(companyNode.data.totalExpenses) || 0) / (parseFloat(companyNode.data.totalBW) || 1)
+      : 0;
 
     // Calculate node total cost for PR Cost
     const rent = parseFloat(sourceNode.data.rent) || 0;
@@ -81,7 +87,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const linkBandwidthMatch = linkBandwidthStr.match(/(\d+(?:\.\d+)?)/);
     const linkBandwidth = linkBandwidthMatch ? parseFloat(linkBandwidthMatch[1]) : 100;
 
-    // Calculate PR Cost, Int Cost, EQ $/Mbps, and Transp Cost for each row automatically
+    // Calculate PR Cost, Int Cost, EQ $/Mbps, Transp Cost, and Gast F for each row automatically
     setRows(currentRows => {
       // Calculate total sum of BW column in the table
       let totalTableBandwidth = 0;
