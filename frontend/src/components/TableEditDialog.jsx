@@ -322,6 +322,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           eqCost: '$' + eqCost.toFixed(2),
           transpCost: '$' + transpCost.toFixed(2),
           eqTrans: '$' + eqTrans.toFixed(2),
+          gastF: '$' + gastF.toFixed(2),
           cTotal: '$' + cTotal.toFixed(2),
           eqTotal: '$' + eqTotal.toFixed(2),
           profit: '$' + profit.toFixed(2),
