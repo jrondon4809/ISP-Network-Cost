@@ -275,3 +275,5 @@ agent_communication:
     message: "Added new column EQ Trans to tables. Formula: Row Transp Cost ÷ Row BW. This column is auto-calculated and read-only. Updated TableEditDialog.jsx, TableNode.jsx, and NetworkDiagram.jsx. Tables now have 9 columns total."
   - agent: "main"
     message: "Made tables resizable in the canvas. Users can now drag the edges/corners of table nodes to resize them. When tables are small, columns scroll horizontally. When enlarged, all columns become visible. Added NodeResizer from ReactFlow with green resize handles when table is selected. Min width: 300px, min height: 150px. Default size: 800x200px."
+  - agent: "main"
+    message: "Updated table columns: Removed 'Total' column. Added 6 new columns: Gast F, CTotal, EQ Total, Price, Profit, %Rent. Tables now have 14 columns total. All new columns are editable by user. Updated TableNode.jsx, TableEditDialog.jsx, and NetworkDiagram.jsx. Increased default table width to 1000px to accommodate more columns."
