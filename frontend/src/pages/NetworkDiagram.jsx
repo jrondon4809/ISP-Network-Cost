@@ -233,7 +233,7 @@ export const NetworkDiagram = () => {
       eds.map((edge) => {
         if (edge.id === edgeId) {
           let style = { strokeWidth: 2 };
-          let animated = false;
+          let animated = true; // All link types are now animated
           
           switch (newData.linkType) {
             case 'solid':
@@ -245,7 +245,6 @@ export const NetworkDiagram = () => {
               break;
             case 'arrow':
               style.stroke = 'hsl(var(--link-arrow))';
-              animated = true;
               break;
             default:
               style.stroke = 'hsl(var(--link-solid))';
