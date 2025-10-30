@@ -149,7 +149,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       prCost: '$0.00',
       intCost: '$0.00',
       eqCost: '$0.00',
-      transpCost: '',
+      transpCost: '$0.00',
       totalCost: '',
     };
     setRows([...rows, newRow]);
