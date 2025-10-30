@@ -122,6 +122,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             eqCost: '$0.00',
             transpCost: '$0.00',
             eqTrans: '$0.00',
+            gastF: '$0.00',
             cTotal: '$0.00',
             eqTotal: '$0.00',
             profit: '$0.00',
@@ -143,6 +144,9 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         // EQ Trans formula: Transp Cost ÷ Row BW
         const transpCostValue = parseFloat(transpCost.toFixed(2));
         const eqTrans = transpCostValue / rowBandwidth;
+        
+        // Gast F formula: Company Expenses/Mbps × Link BW ÷ Total Table BW × Row BW
+        const gastF = companyExpensesPerMbps * linkBandwidth / totalTableBandwidth * rowBandwidth;
         
         // Get Gast F value (parse numeric value from string)
         const gastFStr = row.gastF || '$0';
