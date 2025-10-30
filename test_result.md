@@ -281,3 +281,5 @@ agent_communication:
     message: "Renamed 'Transp Cost' column to 'Trans'. Made CTotal auto-calculated with formula: CTotal = PR Cost + Int Cost + Trans + Gast F. Updated TableNode.jsx (renamed column header), TableEditDialog.jsx (made CTotal read-only, added auto-calculation logic that triggers when BW or Gast F changes, added CTotal formula display). CTotal now updates automatically whenever PR Cost, Int Cost, Trans, or Gast F values change."
   - agent: "main"
     message: "Fixed compilation error in TableEditDialog.jsx - removed duplicate closing brace on line 283. Frontend now compiling successfully. All services running without errors."
+  - agent: "main"
+    message: "Added auto-calculations for EQ Total, Profit, and %Rent columns. EQ Total = CTotal ÷ Row BW. Profit = Price - CTotal. %Rent = (Profit ÷ Price) × 100 (expressed as percentage). Updated TableEditDialog.jsx: made these 3 fields read-only/auto-calculated, added formulas to both useEffect and recalculatePRCost, updated updateRow to trigger recalculation when Price changes, added formula displays to UI. Total of 9 auto-calculated fields now. Frontend compiled successfully."
