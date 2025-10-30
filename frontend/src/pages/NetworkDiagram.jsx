@@ -8,20 +8,23 @@ import ReactFlow, {
   MiniMap,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus, Download, Upload, Trash2, Settings, FileSpreadsheet } from 'lucide-react';
+import { Plus, Download, Upload, Trash2, Settings, FileSpreadsheet, Building2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import NetworkNode from '@/components/NetworkNode';
 import TableNode from '@/components/TableNode';
+import CompanyNode from '@/components/CompanyNode';
 import Toolbar from '@/components/Toolbar';
 import EdgeEditDialog from '@/components/EdgeEditDialog';
 import NodeEditDialog from '@/components/NodeEditDialog';
 import TableEditDialog from '@/components/TableEditDialog';
+import CompanyEditDialog from '@/components/CompanyEditDialog';
 import * as XLSX from 'xlsx';
 
 const nodeTypes = {
   networkNode: NetworkNode,
   tableNode: TableNode,
+  companyNode: CompanyNode,
 };
 
 export const NetworkDiagram = () => {
