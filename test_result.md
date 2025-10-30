@@ -213,7 +213,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Complex edit dialog with add/remove rows, auto-calculation of PR Cost, Int Cost, EQ $/Mbps, and Transp Cost based on connected node and link. Transp Cost formula: Link MRC × Row BW ÷ Total Table BW"
+        comment: "Complex edit dialog with add/remove rows, auto-calculation of PR Cost, Int Cost, EQ $/Mbps, Transp Cost, and EQ Trans based on connected node and link. Transp Cost formula: Link MRC × Row BW ÷ Total Table BW. EQ Trans formula: Row Transp Cost ÷ Row BW"
 
   - task: "Export/Import functionality"
     implemented: true
