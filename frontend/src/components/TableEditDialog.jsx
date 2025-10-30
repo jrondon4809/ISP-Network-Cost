@@ -227,6 +227,12 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
     const sourceNode = nodes.find(n => n.id === connectedEdge.source);
     if (!sourceNode || sourceNode.type !== 'networkNode') return;
 
+    // Find company node for Gast F calculation
+    const companyNode = nodes.find(n => n.type === 'companyNode');
+    const companyExpensesPerMbps = companyNode 
+      ? (parseFloat(companyNode.data.totalExpenses) || 0) / (parseFloat(companyNode.data.totalBW) || 1)
+      : 0;
+
     const rent = parseFloat(sourceNode.data.rent) || 0;
     const carryInRent = parseFloat(sourceNode.data.carryInRent) || 0;
     const nodeTotalCost = rent + carryInRent;
