@@ -278,7 +278,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
 
         if (rowBandwidth === 0) {
-          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00', eqTrans: '$0.00', cTotal: '$0.00', eqTotal: '$0.00', profit: '$0.00', rentPercent: '0.00%' };
+          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00', eqTrans: '$0.00', gastF: '$0.00', cTotal: '$0.00', eqTotal: '$0.00', profit: '$0.00', rentPercent: '0.00%' };
         }
 
         const prCost = prCostPerUnit * rowBandwidth;
@@ -295,10 +295,8 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const transpCostValue = parseFloat(transpCost.toFixed(2));
         const eqTrans = transpCostValue / rowBandwidth;
         
-        // Get Gast F value (parse numeric value from string)
-        const gastFStr = row.gastF || '$0';
-        const gastFMatch = gastFStr.match(/(\d+(?:\.\d+)?)/);
-        const gastF = gastFMatch ? parseFloat(gastFMatch[1]) : 0;
+        // Gast F formula: Company Expenses/Mbps × Link BW ÷ Total Table BW × Row BW
+        const gastF = companyExpensesPerMbps * linkBandwidth / totalTableBandwidth * rowBandwidth;
         
         // CTotal formula: PR Cost + Int Cost + Trans + Gast F
         const cTotal = prCost + intCost + transpCost + gastF;
