@@ -251,6 +251,8 @@ export const NetworkDiagram = () => {
       setSelectedNode(node);
     } else if (node.type === 'tableNode') {
       setSelectedTable(node);
+    } else if (node.type === 'companyNode') {
+      setSelectedCompany(node);
     }
   }, []);
 
