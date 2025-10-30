@@ -624,19 +624,15 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                         className="h-9 bg-muted/50 cursor-not-allowed"
                         placeholder="Auto-calculated"
                       />
-                        placeholder="CTotal"
-                        className="h-9"
-                      />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">EQ Total</Label>
+                      <Label className="text-xs">EQ Total (auto-calculated)</Label>
                       <Input
                         value={row.eqTotal}
-                        onChange={(e) =>
-                          updateRow(row.id, 'eqTotal', e.target.value)
-                        }
-                        placeholder="EQ Total"
-                        className="h-9"
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
                       />
                     </div>
                     <div className="grid gap-1.5">
@@ -651,18 +647,17 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">Profit</Label>
+                      <Label className="text-xs">Profit (auto-calculated)</Label>
                       <Input
                         value={row.profit}
-                        onChange={(e) =>
-                          updateRow(row.id, 'profit', e.target.value)
-                        }
-                        placeholder="Profit"
-                        className="h-9"
+                        readOnly
+                        disabled
+                        className="h-9 bg-muted/50 cursor-not-allowed"
+                        placeholder="Auto-calculated"
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">%Rent</Label>
+                      <Label className="text-xs">%Rent (auto-calculated)</Label>
                       <Input
                         value={row.rentPercent}
                         onChange={(e) =>
