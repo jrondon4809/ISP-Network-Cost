@@ -657,6 +657,129 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           </DialogFooter>
         </form>
       </DialogContent>
+
+      {/* Formulas Reference Dialog */}
+      <Dialog open={showFormulas} onOpenChange={setShowFormulas}>
+        <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Calculator className="w-5 h-5 text-primary" />
+              Auto-Calculation Formulas Reference
+            </DialogTitle>
+            <DialogDescription>
+              These formulas are automatically applied to calculate values in your table rows.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">PR Cost Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                (Node Total Cost ÷ Total Outgoing BW) × Link BW ÷ Total Table BW × Row BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Distributes the node's total cost (Rent + Carry In Rent) proportionally based on bandwidth allocation.
+              </p>
+            </div>
+
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">Int Cost Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                (Node Int Cost × Link BW) ÷ Total Table BW × Row BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Distributes the node's internet cost proportionally across table rows.
+              </p>
+            </div>
+
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">EQ $/Mbps Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Row Int Cost ÷ Row BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Calculates the cost per Mbps for internet connectivity.
+              </p>
+            </div>
+
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">Trans Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Link MRC × Row BW ÷ Total Table BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Distributes the link's monthly recurring cost (MRC) proportionally.
+              </p>
+            </div>
+
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">EQ Trans Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Row Trans ÷ Row BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Calculates the transport cost per Mbps.
+              </p>
+            </div>
+
+            <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h3 className="font-semibold text-sm mb-2 text-purple-700 dark:text-purple-300">Gast F Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Company Expenses/Mbps × Link BW ÷ Total Table BW × Row BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Distributes company-wide expenses from the Company node proportionally.
+              </p>
+            </div>
+
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">CTotal Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Row PR Cost + Row Int Cost + Row Trans + Row Gast F
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Total cost combining all cost components.
+              </p>
+            </div>
+
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="font-semibold text-sm mb-2 text-primary">EQ Total Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                CTotal ÷ Row BW
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Calculates the total cost per Mbps.
+              </p>
+            </div>
+
+            <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
+              <h3 className="font-semibold text-sm mb-2 text-green-700 dark:text-green-300">Profit Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Row Price - CTotal
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Profit margin after deducting all costs.
+              </p>
+            </div>
+
+            <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
+              <h3 className="font-semibold text-sm mb-2 text-green-700 dark:text-green-300">%Rent Formula</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                (Row Profit ÷ Row Price) × 100
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Profit percentage relative to the selling price.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <Button onClick={() => setShowFormulas(false)}>
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 };
