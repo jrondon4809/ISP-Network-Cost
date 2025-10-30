@@ -148,11 +148,6 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         // Gast F formula: Company Expenses/Mbps × Link BW ÷ Total Table BW × Row BW
         const gastF = companyExpensesPerMbps * linkBandwidth / totalTableBandwidth * rowBandwidth;
         
-        // Get Gast F value (parse numeric value from string)
-        const gastFStr = row.gastF || '$0';
-        const gastFMatch = gastFStr.match(/(\d+(?:\.\d+)?)/);
-        const gastF = gastFMatch ? parseFloat(gastFMatch[1]) : 0;
-        
         // CTotal formula: PR Cost + Int Cost + Trans + Gast F
         const cTotal = prCost + intCost + transpCost + gastF;
         
