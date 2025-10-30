@@ -388,10 +388,29 @@ export const NetworkDiagram = () => {
 
 
   const deleteSelected = useCallback(() => {
-    setNodes((nds) => nds.filter((node) => !node.selected));
-    setEdges((eds) => eds.filter((edge) => !edge.selected));
+    setNodes((nds) => {
+      const remainingNodes = nds.filter((node) => !node.selected);
+      
+      setEdges((currentEdges) => {
+        const remainingEdges = currentEdges.filter((edge) => !edge.selected);
+        
+        // Recalculate all tables after deletion
+        return remainingEdges;
+      });
+      
+      // Get the current edges after filtering
+      setEdges((currentEdges) => {
+        const recalculatedNodes = recalculateAllTables(remainingNodes, currentEdges);
+        // Update the nodes with recalculated tables
+        setTimeout(() => setNodes(recalculatedNodes), 0);
+        return currentEdges;
+      });
+      
+      return remainingNodes;
+    });
+    
     toast.success('Selected items deleted');
-  }, []);
+  }, [recalculateAllTables]);
 
   const onNodeClick = useCallback((event, node) => {
     if (node.type === 'networkNode') {
