@@ -45,7 +45,7 @@ export const TableNode = ({ data, selected }) => {
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">PR Cost</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Int Cost</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">EQ $/Mbps</th>
-                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Transp Cost</th>
+                  <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Trans</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">EQ Trans</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Gast F</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">CTotal</th>
