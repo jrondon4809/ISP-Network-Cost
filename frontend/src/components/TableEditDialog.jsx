@@ -277,7 +277,9 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           intCost: '$' + intCost.toFixed(2),
           eqCost: '$' + eqCost.toFixed(2),
           transpCost: '$' + transpCost.toFixed(2),
-          eqTrans: '$' + eqTrans.toFixed(2)
+          eqTrans: '$' + eqTrans.toFixed(2),
+          cTotal: '$' + cTotal.toFixed(2)
+        };
         };
       });
     });
