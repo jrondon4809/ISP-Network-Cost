@@ -472,6 +472,24 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                     Row PR Cost + Row Int Cost + Row Trans + Row Gast F
                   </p>
                 </div>
+                <div className="p-2 bg-background/50 rounded text-xs">
+                  <p className="font-medium text-foreground">EQ Total Formula:</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    CTotal ÷ Row BW
+                  </p>
+                </div>
+                <div className="p-2 bg-background/50 rounded text-xs">
+                  <p className="font-medium text-foreground">Profit Formula:</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    Row Price - CTotal
+                  </p>
+                </div>
+                <div className="p-2 bg-background/50 rounded text-xs">
+                  <p className="font-medium text-foreground">%Rent Formula:</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    (Row Profit ÷ Row Price) × 100
+                  </p>
+                </div>
               </div>
             </div>
           )}
