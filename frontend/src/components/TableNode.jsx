@@ -2,6 +2,28 @@ import React from 'react';
 import { Handle, Position, NodeResizer } from 'reactflow';
 import { Table } from 'lucide-react';
 
+// Helper function to ensure BW has Mbps unit
+const formatBW = (bw) => {
+  if (!bw) return '';
+  const bwStr = String(bw).trim();
+  if (bwStr.toLowerCase().includes('mbps')) return bwStr;
+  // If it's just a number, add Mbps
+  const numMatch = bwStr.match(/^(\d+(?:\.\d+)?)/);
+  if (numMatch) return `${numMatch[1]} Mbps`;
+  return bwStr;
+};
+
+// Helper function to ensure Price has $ prefix
+const formatPrice = (price) => {
+  if (!price) return '';
+  const priceStr = String(price).trim();
+  if (priceStr.startsWith('$')) return priceStr;
+  // If it's just a number, add $
+  const numMatch = priceStr.match(/^(\d+(?:\.\d+)?)/);
+  if (numMatch) return `$${numMatch[1]}`;
+  return priceStr;
+};
+
 export const TableNode = ({ data, selected }) => {
   const maxVisibleRows = data.maxVisibleRows || 3;
   
