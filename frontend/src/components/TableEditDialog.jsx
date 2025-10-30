@@ -231,7 +231,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         const rowBandwidth = rowBwMatch ? parseFloat(rowBwMatch[1]) : 0;
 
         if (rowBandwidth === 0) {
-          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00' };
+          return { ...row, prCost: '$0.00', intCost: '$0.00', eqCost: '$0.00', transpCost: '$0.00', eqTrans: '$0.00' };
         }
 
         const prCost = prCostPerUnit * rowBandwidth;
@@ -243,6 +243,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         
         // Transp Cost formula: Link MRC × Row BW ÷ Total Table BW
         const transpCost = (linkMrc * rowBandwidth) / totalTableBandwidth;
+        
+        // EQ Trans formula: Transp Cost ÷ Row BW
+        const transpCostValue = parseFloat(transpCost.toFixed(2));
+        const eqTrans = transpCostValue / rowBandwidth;
         
         return { 
           ...row, 
