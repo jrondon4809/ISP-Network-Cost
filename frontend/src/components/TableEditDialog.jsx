@@ -524,14 +524,69 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                         placeholder="Auto-calculated"
                       />
                     </div>
-                    <div className="grid gap-1.5 col-span-2">
-                      <Label className="text-xs">Total Cost</Label>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">Gast F</Label>
                       <Input
-                        value={row.totalCost}
+                        value={row.gastF}
                         onChange={(e) =>
-                          updateRow(row.id, 'totalCost', e.target.value)
+                          updateRow(row.id, 'gastF', e.target.value)
                         }
-                        placeholder="Total"
+                        placeholder="Gast F"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">CTotal</Label>
+                      <Input
+                        value={row.cTotal}
+                        onChange={(e) =>
+                          updateRow(row.id, 'cTotal', e.target.value)
+                        }
+                        placeholder="CTotal"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">EQ Total</Label>
+                      <Input
+                        value={row.eqTotal}
+                        onChange={(e) =>
+                          updateRow(row.id, 'eqTotal', e.target.value)
+                        }
+                        placeholder="EQ Total"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">Price</Label>
+                      <Input
+                        value={row.price}
+                        onChange={(e) =>
+                          updateRow(row.id, 'price', e.target.value)
+                        }
+                        placeholder="Price"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">Profit</Label>
+                      <Input
+                        value={row.profit}
+                        onChange={(e) =>
+                          updateRow(row.id, 'profit', e.target.value)
+                        }
+                        placeholder="Profit"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs">%Rent</Label>
+                      <Input
+                        value={row.rentPercent}
+                        onChange={(e) =>
+                          updateRow(row.id, 'rentPercent', e.target.value)
+                        }
+                        placeholder="%Rent"
                         className="h-9"
                       />
                     </div>
