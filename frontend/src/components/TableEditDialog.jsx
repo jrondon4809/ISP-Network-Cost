@@ -514,11 +514,11 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
                       />
                     </div>
                     <div className="grid gap-1.5">
-                      <Label className="text-xs">BW (e.g., 100 Mbps)</Label>
+                      <Label className="text-xs">BW (Mbps)</Label>
                       <Input
                         value={row.bw}
                         onChange={(e) => updateRow(row.id, 'bw', e.target.value)}
-                        placeholder="Bandwidth"
+                        placeholder="e.g., 100 Mbps"
                         className="h-9"
                       />
                     </div>
