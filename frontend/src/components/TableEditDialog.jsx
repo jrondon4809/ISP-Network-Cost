@@ -280,7 +280,6 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           eqTrans: '$' + eqTrans.toFixed(2),
           cTotal: '$' + cTotal.toFixed(2)
         };
-        };
       });
     });
   };
