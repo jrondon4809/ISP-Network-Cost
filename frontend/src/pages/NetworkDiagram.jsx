@@ -619,6 +619,14 @@ export const NetworkDiagram = () => {
           onClose={() => setSelectedTable(null)}
         />
       )}
+
+      {selectedCompany && (
+        <CompanyEditDialog
+          company={selectedCompany}
+          onSave={(data) => updateCompany(selectedCompany.id, data)}
+          onClose={() => setSelectedCompany(null)}
+        />
+      )}
     </div>
   );
 };
