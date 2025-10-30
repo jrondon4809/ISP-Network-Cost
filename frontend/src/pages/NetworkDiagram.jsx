@@ -33,6 +33,7 @@ export const NetworkDiagram = () => {
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [selectedTable, setSelectedTable] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
