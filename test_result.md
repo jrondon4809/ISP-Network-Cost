@@ -271,3 +271,5 @@ agent_communication:
     message: "Updated link animations: All three link types (solid blue, dashed green, arrow purple) are now animated as per user request. Changes applied to NetworkDiagram.jsx"
   - agent: "main"
     message: "Added auto-calculation for Transp Cost in tables. Formula: Link MRC × Row BW ÷ Total Table BW. Updated TableEditDialog.jsx to automatically calculate and display Transp Cost based on the connected link's MRC value. Field is now read-only with auto-calculation."
+  - agent: "main"
+    message: "Added new column EQ Trans to tables. Formula: Row Transp Cost ÷ Row BW. This column is auto-calculated and read-only. Updated TableEditDialog.jsx, TableNode.jsx, and NetworkDiagram.jsx. Tables now have 9 columns total."
