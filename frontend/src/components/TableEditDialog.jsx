@@ -193,7 +193,7 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
       eqCost: '$0.00',
       transpCost: '$0.00',
       eqTrans: '$0.00',
-      gastF: '',
+      gastF: '$0.00',
       cTotal: '$0.00',
       eqTotal: '$0.00',
       price: '',
