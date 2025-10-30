@@ -366,14 +366,42 @@ export const NetworkDiagram = () => {
   }, []);
 
   const updateNode = useCallback((nodeId, newData) => {
-    setNodes((nds) =>
-      nds.map((node) =>
+    setNodes((nds) => {
+      const updatedNodes = nds.map((node) =>
         node.id === nodeId ? { ...node, data: newData } : node
-      )
-    );
+      );
+      
+      // Find all tables connected to this node and recalculate them
+      setEdges((currentEdges) => {
+        const connectedTables = updatedNodes.filter(node => {
+          if (node.type !== 'tableNode') return false;
+          // Check if any edge connects this node to the table
+          return currentEdges.some(edge => edge.source === nodeId && edge.target === node.id);
+        });
+
+        // Recalculate each connected table
+        connectedTables.forEach(table => {
+          const recalculatedRows = recalculateTableRows(table, updatedNodes, currentEdges);
+          const tableIndex = updatedNodes.findIndex(n => n.id === table.id);
+          if (tableIndex !== -1) {
+            updatedNodes[tableIndex] = {
+              ...updatedNodes[tableIndex],
+              data: {
+                ...updatedNodes[tableIndex].data,
+                rows: recalculatedRows
+              }
+            };
+          }
+        });
+
+        return currentEdges;
+      });
+
+      return updatedNodes;
+    });
     setSelectedNode(null);
     toast.success('Node updated successfully');
-  }, []);
+  }, [recalculateTableRows]);
 
   const updateEdge = useCallback((edgeId, newData) => {
     setEdges((eds) =>
