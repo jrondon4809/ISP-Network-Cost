@@ -197,11 +197,11 @@ frontend:
     file: "/app/frontend/src/components/TableNode.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
-        comment: "Tables display Client, Service, BW, PR Cost, Int Cost, EQ $/Mbps, Transp Cost, Total Cost (8 columns total, exceeds requirement of 6)"
+        comment: "Tables display Client, Service, BW, PR Cost, Int Cost, EQ $/Mbps, Transp Cost, EQ Trans, Total Cost (9 columns total, exceeds requirement of 6). Added EQ Trans column which auto-calculates as Transp Cost ÷ Row BW"
 
   - task: "Table edit dialog with auto-calculations"
     implemented: true
