@@ -116,7 +116,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
             eqCost: '$0.00',
             transpCost: '$0.00',
             eqTrans: '$0.00',
-            cTotal: '$0.00'
+            cTotal: '$0.00',
+            eqTotal: '$0.00',
+            profit: '$0.00',
+            rentPercent: '0.00%'
           };
         }
 
@@ -143,6 +146,20 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
         // CTotal formula: PR Cost + Int Cost + Trans + Gast F
         const cTotal = prCost + intCost + transpCost + gastF;
         
+        // EQ Total formula: CTotal ÷ Row BW
+        const eqTotal = rowBandwidth > 0 ? cTotal / rowBandwidth : 0;
+        
+        // Get Price value (parse numeric value from string)
+        const priceStr = row.price || '$0';
+        const priceMatch = priceStr.match(/(\d+(?:\.\d+)?)/);
+        const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
+        
+        // Profit formula: Price - CTotal
+        const profit = price - cTotal;
+        
+        // %Rent formula: (Profit ÷ Price) × 100
+        const rentPercent = price > 0 ? (profit / price) * 100 : 0;
+        
         return {
           ...row,
           prCost: '$' + prCost.toFixed(2),
@@ -150,7 +167,10 @@ export const TableEditDialog = ({ table, onSave, onClose, nodes, edges }) => {
           eqCost: '$' + eqCost.toFixed(2),
           transpCost: '$' + transpCost.toFixed(2),
           eqTrans: '$' + eqTrans.toFixed(2),
-          cTotal: '$' + cTotal.toFixed(2)
+          cTotal: '$' + cTotal.toFixed(2),
+          eqTotal: '$' + eqTotal.toFixed(2),
+          profit: '$' + profit.toFixed(2),
+          rentPercent: rentPercent.toFixed(2) + '%'
         };
       });
     });
