@@ -484,14 +484,37 @@ export const NetworkDiagram = () => {
   }, []);
 
   const updateCompany = useCallback((nodeId, newData) => {
-    setNodes((nds) =>
-      nds.map((node) =>
+    setNodes((nds) => {
+      const updatedNodes = nds.map((node) =>
         node.id === nodeId ? { ...node, data: newData } : node
-      )
-    );
+      );
+
+      // Recalculate all tables since company data affects Gast F in all tables
+      setEdges((currentEdges) => {
+        const allTables = updatedNodes.filter(node => node.type === 'tableNode');
+        
+        allTables.forEach(table => {
+          const recalculatedRows = recalculateTableRows(table, updatedNodes, currentEdges);
+          const tableIndex = updatedNodes.findIndex(n => n.id === table.id);
+          if (tableIndex !== -1) {
+            updatedNodes[tableIndex] = {
+              ...updatedNodes[tableIndex],
+              data: {
+                ...updatedNodes[tableIndex].data,
+                rows: recalculatedRows
+              }
+            };
+          }
+        });
+
+        return currentEdges;
+      });
+
+      return updatedNodes;
+    });
     setSelectedCompany(null);
     toast.success('Company updated successfully');
-  }, []);
+  }, [recalculateTableRows]);
 
   const exportDiagram = useCallback(() => {
     const data = {
