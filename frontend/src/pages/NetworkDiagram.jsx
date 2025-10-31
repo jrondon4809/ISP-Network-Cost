@@ -280,15 +280,16 @@ export const NetworkDiagram = () => {
       setEdges((eds) => {
         const updatedEdges = applyEdgeChanges(changes, eds);
         
-        // If edges were removed, recalculate all tables
+        // If edges were removed, recalculate all tables and Carry In
         if (hasRemovals) {
           setNodes((currentNodes) => recalculateAllTables(currentNodes, updatedEdges));
+          setTimeout(() => calculateCarryIn(), 50);
         }
         
         return updatedEdges;
       });
     },
-    [recalculateAllTables]
+    [recalculateAllTables, calculateCarryIn]
   );
 
   const onConnect = useCallback(
