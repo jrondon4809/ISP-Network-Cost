@@ -103,10 +103,10 @@ export const NodeEditDialog = ({ node, onSave, onClose }) => {
                 readOnly
                 disabled
                 className="bg-muted cursor-not-allowed"
-                placeholder="Auto-calculated from incoming link"
+                placeholder="Auto-calculated from incoming links"
               />
               <p className="text-xs text-muted-foreground">
-                Formula: Sum of [(Source Total Cost ÷ Total Outgoing BW) × Incoming Link BW] for all incoming connections
+                Formula: Sum of [(Source Total Cost ÷ Total Outgoing BW) × Incoming Link BW] + Sum of all incoming Link MRC
               </p>
             </div>
             <div className="p-3 bg-primary/5 rounded-lg border border-primary/20">
