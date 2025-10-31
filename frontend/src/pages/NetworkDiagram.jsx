@@ -315,9 +315,12 @@ export const NetworkDiagram = () => {
         return updatedEdges;
       });
       
+      // Recalculate Carry In for all nodes after new connection
+      setTimeout(() => calculateCarryIn(), 50);
+      
       toast.success('Link created successfully');
     },
-    [recalculateAllTables]
+    [recalculateAllTables, calculateCarryIn]
   );
 
   const addNode = useCallback(() => {
