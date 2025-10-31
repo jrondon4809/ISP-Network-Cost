@@ -557,9 +557,13 @@ export const NetworkDiagram = () => {
 
       return updatedEdges;
     });
+    
+    // Recalculate Carry In for all nodes after edge update
+    setTimeout(() => calculateCarryIn(), 50);
+    
     setSelectedEdge(null);
     toast.success('Link updated successfully');
-  }, [recalculateTableRows]);
+  }, [recalculateTableRows, calculateCarryIn]);
 
   const updateTable = useCallback((nodeId, newData) => {
     setNodes((nds) =>
