@@ -37,16 +37,16 @@ export const NetworkDiagram = () => {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  // Auto-calculate Carry In Rent for all nodes based on incoming connections
-  useEffect(() => {
-    const calculateCarryIn = () => {
-      setNodes((currentNodes) => {
-        return currentNodes.map((node) => {
+  // Function to calculate Carry In Rent for all nodes
+  const calculateCarryIn = useCallback(() => {
+    setNodes((currentNodes) => {
+      setEdges((currentEdges) => {
+        const updatedNodes = currentNodes.map((node) => {
           // Only process network nodes
           if (node.type !== 'networkNode') return node;
 
           // Find ALL incoming edges to this node
-          const incomingEdges = edges.filter(edge => edge.target === node.id);
+          const incomingEdges = currentEdges.filter(edge => edge.target === node.id);
 
           if (incomingEdges.length === 0) {
             // No incoming connection, Carry In = 0
@@ -66,7 +66,7 @@ export const NetworkDiagram = () => {
           let totalCarryIn = 0;
 
           incomingEdges.forEach(incomingEdge => {
-            const sourceNode = currentNodes.find(n => n.id === incomingEdge.source);
+            const sourceNode = updatedNodes.find(n => n.id === incomingEdge.source);
 
             if (!sourceNode || sourceNode.type !== 'networkNode') {
               return;
@@ -78,7 +78,7 @@ export const NetworkDiagram = () => {
             const sourceTotalCost = sourceRent + sourceCarryIn;
 
             // Find ALL outgoing edges from this source node
-            const outgoingEdges = edges.filter(e => e.source === sourceNode.id);
+            const outgoingEdges = currentEdges.filter(e => e.source === sourceNode.id);
             
             // Calculate total sum of all outgoing link bandwidths from this source node
             let totalBandwidth = 0;
@@ -130,11 +130,18 @@ export const NetworkDiagram = () => {
 
           return node;
         });
-      });
-    };
 
+        setTimeout(() => setNodes(updatedNodes), 0);
+        return currentEdges;
+      });
+      return currentNodes;
+    });
+  }, []);
+
+  // Auto-calculate Carry In Rent when edges or nodes change
+  useEffect(() => {
     calculateCarryIn();
-  }, [edges, nodes.length]); // Recalculate when edges change or nodes are added/removed
+  }, [edges, nodes.length, calculateCarryIn]);
 
   // Helper function to recalculate a single table's row values
   const recalculateTableRows = useCallback((table, allNodes, allEdges) => {
