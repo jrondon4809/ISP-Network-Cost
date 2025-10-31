@@ -423,8 +423,9 @@ export const NetworkDiagram = () => {
       return finalEdges;
     });
     
-    // Recalculate all tables after deletion
+    // Recalculate all tables and Carry In after deletion
     setTimeout(() => {
+      calculateCarryIn();
       setNodes((currentNodes) => {
         setEdges((currentEdges) => {
           const recalculatedNodes = recalculateAllTables(currentNodes, currentEdges);
@@ -436,7 +437,7 @@ export const NetworkDiagram = () => {
     }, 100);
     
     toast.success('Selected items deleted');
-  }, [recalculateAllTables]);
+  }, [recalculateAllTables, calculateCarryIn]);
 
   const onNodeClick = useCallback((event, node) => {
     if (node.type === 'networkNode') {
