@@ -103,6 +103,18 @@ export const NetworkDiagram = () => {
             totalCarryIn += carryInFromThisSource;
           });
 
+          // Add sum of all MRC from incoming links to this node
+          let totalIncomingMRC = 0;
+          incomingEdges.forEach(incomingEdge => {
+            const mrcStr = incomingEdge.data?.mrc || '$0';
+            const mrcMatch = mrcStr.match(/(\d+(?:\.\d+)?)/);
+            const mrc = mrcMatch ? parseFloat(mrcMatch[1]) : 0;
+            totalIncomingMRC += mrc;
+          });
+
+          // Final Carry In = Carry In from sources + Sum of all incoming MRC
+          totalCarryIn += totalIncomingMRC;
+
           const carryInStr = totalCarryIn.toFixed(2);
 
           // Only update if value changed
