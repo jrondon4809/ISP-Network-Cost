@@ -66,7 +66,7 @@ export const NetworkDiagram = () => {
           let totalCarryIn = 0;
 
           incomingEdges.forEach(incomingEdge => {
-            const sourceNode = updatedNodes.find(n => n.id === incomingEdge.source);
+            const sourceNode = currentNodes.find(n => n.id === incomingEdge.source);
 
             if (!sourceNode || sourceNode.type !== 'networkNode') {
               return;
