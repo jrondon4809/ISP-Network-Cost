@@ -25,6 +25,34 @@ const formatPrice = (price) => {
 };
 
 export const TableNode = ({ data, selected }) => {
+  // Calculate totals
+  const totals = data.rows?.reduce((acc, row) => {
+    // Parse BW
+    const bwStr = row.bw || '0';
+    const bwMatch = bwStr.match(/(\d+(?:\.\d+)?)/);
+    const bw = bwMatch ? parseFloat(bwMatch[1]) : 0;
+    
+    // Parse CTotal
+    const cTotalStr = row.cTotal || '$0';
+    const cTotalMatch = cTotalStr.match(/(\d+(?:\.\d+)?)/);
+    const cTotal = cTotalMatch ? parseFloat(cTotalMatch[1]) : 0;
+    
+    // Parse Price
+    const priceStr = row.price || '$0';
+    const priceMatch = priceStr.match(/(\d+(?:\.\d+)?)/);
+    const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
+    
+    return {
+      bw: acc.bw + bw,
+      cTotal: acc.cTotal + cTotal,
+      price: acc.price + price
+    };
+  }, { bw: 0, cTotal: 0, price: 0 }) || { bw: 0, cTotal: 0, price: 0 };
+
+  // Calculate total profit and %Rent
+  const totalProfit = totals.price - totals.cTotal;
+  const totalRentPercent = totals.price > 0 ? (totalProfit / totals.price) * 100 : 0;
+
   return (
     <>
       <NodeResizer
@@ -95,6 +123,23 @@ export const TableNode = ({ data, selected }) => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot className="sticky bottom-0 bg-primary/10 border-t-2 border-primary">
+                <tr>
+                  <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap" colSpan="2">TOTALS</td>
+                  <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">{totals.bw.toFixed(2)} Mbps</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">${totals.cTotal.toFixed(2)}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">${totals.price.toFixed(2)}</td>
+                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">{totalRentPercent.toFixed(2)}%</td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
