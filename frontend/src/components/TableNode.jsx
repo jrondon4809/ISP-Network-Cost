@@ -25,8 +25,6 @@ const formatPrice = (price) => {
 };
 
 export const TableNode = ({ data, selected }) => {
-  const maxVisibleRows = data.maxVisibleRows || 3;
-  
   return (
     <>
       <NodeResizer
@@ -57,10 +55,10 @@ export const TableNode = ({ data, selected }) => {
             <h3 className="text-sm font-semibold text-foreground truncate">{data.name || 'Data Table'}</h3>
           </div>
           
-          <div className="overflow-auto flex-1">
+          <div className="overflow-auto flex-1" style={{ maxHeight: '100%' }}>
             <table className="w-full text-xs">
-              <thead>
-                <tr className="bg-muted/50">
+              <thead className="sticky top-0 bg-muted/50 z-10">
+                <tr>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Client</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">Service</th>
                   <th className="px-2 py-1.5 text-left text-muted-foreground font-medium whitespace-nowrap">BW</th>
@@ -78,7 +76,7 @@ export const TableNode = ({ data, selected }) => {
                 </tr>
               </thead>
               <tbody>
-                {data.rows?.slice(0, maxVisibleRows).map((row, index) => (
+                {data.rows?.map((row, index) => (
                   <tr key={row.id || index} className="border-t border-border">
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.client}</td>
                     <td className="px-2 py-1.5 text-foreground whitespace-nowrap">{row.service}</td>
@@ -98,11 +96,6 @@ export const TableNode = ({ data, selected }) => {
                 ))}
               </tbody>
             </table>
-            {data.rows?.length > maxVisibleRows && (
-              <div className="text-xs text-center text-muted-foreground mt-2 pb-2">
-                +{data.rows.length - maxVisibleRows} more rows
-              </div>
-            )}
           </div>
         </div>
 
