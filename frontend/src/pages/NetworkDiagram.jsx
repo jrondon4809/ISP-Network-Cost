@@ -411,6 +411,32 @@ export const NetworkDiagram = () => {
     toast.success('Company node added successfully');
   }, [nodes]);
 
+  const addDashboard = useCallback(() => {
+    // Check if dashboard node already exists
+    const dashboardExists = nodes.some(node => node.type === 'dashboardNode');
+    if (dashboardExists) {
+      toast.error('Dashboard already exists. Only one dashboard is allowed.');
+      return;
+    }
+
+    const newDashboard = {
+      id: 'dashboard-1',
+      type: 'dashboardNode',
+      position: {
+        x: 500,
+        y: 100,
+      },
+      data: {
+        totalCTotal: 0,
+        totalPrice: 0,
+        totalProfit: 0,
+        totalRentPercent: 0,
+      },
+    };
+    setNodes((nds) => [...nds, newDashboard]);
+    toast.success('Dashboard added successfully');
+  }, [nodes]);
+
 
   const deleteSelected = useCallback(() => {
     let finalNodes = [];
