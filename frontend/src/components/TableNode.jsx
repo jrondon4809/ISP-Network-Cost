@@ -136,7 +136,7 @@ export const TableNode = ({ data, selected }) => {
                   <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">${totals.cTotal.toFixed(2)}</td>
                   <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
                   <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">${totals.price.toFixed(2)}</td>
-                  <td className="px-2 py-1.5 text-foreground whitespace-nowrap"></td>
+                  <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">${totalProfit.toFixed(2)}</td>
                   <td className="px-2 py-1.5 font-bold text-primary whitespace-nowrap">{totalRentPercent.toFixed(2)}%</td>
                 </tr>
               </tfoot>
