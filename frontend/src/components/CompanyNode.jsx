@@ -8,6 +8,11 @@ export const CompanyNode = ({ data, selected }) => {
   const totalBW = parseFloat(data.totalBW) || 0;
   const expensesPerMbps = totalBW > 0 ? totalExpenses / totalBW : 0;
 
+  // Get auto-calculated values
+  const revenue = parseFloat(data.revenue) || 0;
+  const profit = parseFloat(data.profit) || 0;
+  const rentPercent = parseFloat(data.rentPercent) || 0;
+
   return (
     <div
       className={`
@@ -60,6 +65,36 @@ export const CompanyNode = ({ data, selected }) => {
             </div>
             <div className="text-xl font-bold text-purple-900 dark:text-purple-100">
               ${expensesPerMbps.toFixed(2)}/Mbps
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-lg p-3 border border-green-300 dark:border-green-700">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs font-semibold text-green-800 dark:text-green-200">Revenue</span>
+              <span className="text-xs text-green-600 dark:text-green-400">(auto)</span>
+            </div>
+            <div className="text-xl font-bold text-green-900 dark:text-green-100">
+              ${revenue.toFixed(2)}
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 rounded-lg p-3 border border-blue-300 dark:border-blue-700">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs font-semibold text-blue-800 dark:text-blue-200">Profit</span>
+              <span className="text-xs text-blue-600 dark:text-blue-400">(auto)</span>
+            </div>
+            <div className="text-xl font-bold text-blue-900 dark:text-blue-100">
+              ${profit.toFixed(2)}
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900 rounded-lg p-3 border border-amber-300 dark:border-amber-700">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs font-semibold text-amber-800 dark:text-amber-200">Rent%</span>
+              <span className="text-xs text-amber-600 dark:text-amber-400">(auto)</span>
+            </div>
+            <div className="text-xl font-bold text-amber-900 dark:text-amber-100">
+              {rentPercent.toFixed(2)}%
             </div>
           </div>
         </div>
