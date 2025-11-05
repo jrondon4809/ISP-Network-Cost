@@ -460,6 +460,9 @@ export const NetworkDiagram = () => {
       data: {
         totalExpenses: 0,
         totalBW: 0,
+        revenue: 0,
+        profit: 0,
+        rentPercent: 0,
       },
     };
     setNodes((nds) => [...nds, newCompany]);
