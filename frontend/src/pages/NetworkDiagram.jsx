@@ -646,14 +646,16 @@ export const NetworkDiagram = () => {
   }, [recalculateTableRows, calculateCarryIn]);
 
   const updateTable = useCallback((nodeId, newData) => {
-    setNodes((nds) =>
-      nds.map((node) =>
+    setNodes((nds) => {
+      const updatedNodes = nds.map((node) =>
         node.id === nodeId ? { ...node, data: newData } : node
-      )
-    );
+      );
+      // Update company totals after table update
+      return updateCompanyTotals(updatedNodes);
+    });
     setSelectedTable(null);
     toast.success('Table updated successfully');
-  }, []);
+  }, [updateCompanyTotals]);
 
   const updateCompany = useCallback((nodeId, newData) => {
     setNodes((nds) => {
