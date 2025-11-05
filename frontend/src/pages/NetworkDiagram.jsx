@@ -513,7 +513,9 @@ export const NetworkDiagram = () => {
       setNodes((currentNodes) => {
         setEdges((currentEdges) => {
           const recalculatedNodes = recalculateAllTables(currentNodes, currentEdges);
-          setTimeout(() => setNodes(recalculatedNodes), 0);
+          // Update company totals after table recalculation
+          const finalNodes = updateCompanyTotals(recalculatedNodes);
+          setTimeout(() => setNodes(finalNodes), 0);
           return currentEdges;
         });
         return currentNodes;
@@ -521,7 +523,7 @@ export const NetworkDiagram = () => {
     }, 100);
     
     toast.success('Selected items deleted');
-  }, [recalculateAllTables, calculateCarryIn]);
+  }, [recalculateAllTables, calculateCarryIn, updateCompanyTotals]);
 
   const onNodeClick = useCallback((event, node) => {
     if (node.type === 'networkNode') {
