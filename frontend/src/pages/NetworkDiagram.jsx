@@ -331,14 +331,18 @@ export const NetworkDiagram = () => {
         
         // If edges were removed, recalculate all tables and Carry In
         if (hasRemovals) {
-          setNodes((currentNodes) => recalculateAllTables(currentNodes, updatedEdges));
+          setNodes((currentNodes) => {
+            const recalculatedNodes = recalculateAllTables(currentNodes, updatedEdges);
+            // Update company totals after table recalculation
+            return updateCompanyTotals(recalculatedNodes);
+          });
           setTimeout(() => calculateCarryIn(), 50);
         }
         
         return updatedEdges;
       });
     },
-    [recalculateAllTables, calculateCarryIn]
+    [recalculateAllTables, calculateCarryIn, updateCompanyTotals]
   );
 
   const onConnect = useCallback(
