@@ -269,6 +269,53 @@ export const NetworkDiagram = () => {
     });
   }, [recalculateTableRows]);
 
+  // Function to update Company node with network totals
+  const updateCompanyTotals = useCallback((allNodes) => {
+    const companyNode = allNodes.find(n => n.type === 'companyNode');
+    if (!companyNode) return allNodes;
+
+    // Calculate totals from all tables
+    let totalRevenue = 0;
+    let totalProfit = 0;
+
+    allNodes.forEach(node => {
+      if (node.type === 'tableNode' && node.data.rows) {
+        node.data.rows.forEach(row => {
+          // Extract price value
+          const priceStr = row.price || '$0';
+          const priceMatch = priceStr.match(/(\d+(?:\.\d+)?)/);
+          const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
+          totalRevenue += price;
+
+          // Extract profit value
+          const profitStr = row.profit || '$0';
+          const profitMatch = profitStr.match(/-?(\d+(?:\.\d+)?)/);
+          const profit = profitMatch ? parseFloat(profitMatch[0]) : 0;
+          totalProfit += profit;
+        });
+      }
+    });
+
+    // Calculate Rent%
+    const rentPercent = totalRevenue > 0 ? (totalProfit / totalRevenue) * 100 : 0;
+
+    // Update company node with calculated values
+    return allNodes.map(node => {
+      if (node.type === 'companyNode') {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            revenue: totalRevenue,
+            profit: totalProfit,
+            rentPercent: rentPercent
+          }
+        };
+      }
+      return node;
+    });
+  }, []);
+
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     []
