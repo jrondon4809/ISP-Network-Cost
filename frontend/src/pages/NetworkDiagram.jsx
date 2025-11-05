@@ -360,7 +360,11 @@ export const NetworkDiagram = () => {
         const updatedEdges = addEdge(newEdge, eds);
         
         // Recalculate all tables when a new connection is made
-        setNodes((currentNodes) => recalculateAllTables(currentNodes, updatedEdges));
+        setNodes((currentNodes) => {
+          const recalculatedNodes = recalculateAllTables(currentNodes, updatedEdges);
+          // Update company totals after table recalculation
+          return updateCompanyTotals(recalculatedNodes);
+        });
         
         return updatedEdges;
       });
@@ -370,7 +374,7 @@ export const NetworkDiagram = () => {
       
       toast.success('Link created successfully');
     },
-    [recalculateAllTables, calculateCarryIn]
+    [recalculateAllTables, calculateCarryIn, updateCompanyTotals]
   );
 
   const addNode = useCallback(() => {
