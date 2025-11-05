@@ -571,7 +571,9 @@ export const NetworkDiagram = () => {
         return currentEdges;
       });
 
-      return updatedNodes;
+      // Update company totals after table recalculations
+      const finalNodes = updateCompanyTotals(updatedNodes);
+      return finalNodes;
     });
     
     // Recalculate Carry In for all nodes after node update
@@ -579,7 +581,7 @@ export const NetworkDiagram = () => {
     
     setSelectedNode(null);
     toast.success('Node updated successfully');
-  }, [recalculateTableRows, calculateCarryIn]);
+  }, [recalculateTableRows, calculateCarryIn, updateCompanyTotals]);
 
   const updateEdge = useCallback((edgeId, newData) => {
     setEdges((eds) => {
