@@ -684,11 +684,13 @@ export const NetworkDiagram = () => {
         return currentEdges;
       });
 
-      return updatedNodes;
+      // Update company totals after table recalculations
+      const finalNodes = updateCompanyTotals(updatedNodes);
+      return finalNodes;
     });
     setSelectedCompany(null);
     toast.success('Company updated successfully');
-  }, [recalculateTableRows]);
+  }, [recalculateTableRows, updateCompanyTotals]);
 
   const exportDiagram = useCallback(() => {
     const data = {
