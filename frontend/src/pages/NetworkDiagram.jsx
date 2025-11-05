@@ -629,7 +629,7 @@ export const NetworkDiagram = () => {
           
           if (targetTable) {
             const recalculatedRows = recalculateTableRows(targetTable, currentNodes, updatedEdges);
-            return currentNodes.map(node => {
+            const updatedNodesWithTable = currentNodes.map(node => {
               if (node.id === targetTable.id) {
                 return {
                   ...node,
@@ -641,6 +641,8 @@ export const NetworkDiagram = () => {
               }
               return node;
             });
+            // Update company totals after table recalculation
+            return updateCompanyTotals(updatedNodesWithTable);
           }
           
           return currentNodes;
@@ -655,7 +657,7 @@ export const NetworkDiagram = () => {
     
     setSelectedEdge(null);
     toast.success('Link updated successfully');
-  }, [recalculateTableRows, calculateCarryIn]);
+  }, [recalculateTableRows, calculateCarryIn, updateCompanyTotals]);
 
   const updateTable = useCallback((nodeId, newData) => {
     setNodes((nds) => {
