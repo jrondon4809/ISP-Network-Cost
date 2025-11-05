@@ -251,6 +251,18 @@ frontend:
         agent: "main"
         comment: "Complex formula: Sum of [(Source Total Cost ÷ Total Outgoing BW) × Incoming Link BW] for all incoming connections"
 
+  - task: "Company component auto-calculated parameters (Revenue, Profit, Rent%)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/CompanyNode.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPANY AUTO-CALCULATION TEST COMPLETED SUCCESSFULLY. Verified Company component displays new auto-calculated parameters: 1) Revenue (sum of all Price values from tables) - displayed with proper $ formatting, 2) Profit (sum of all Profit values from tables) - displayed with proper $ formatting, 3) Rent% ((Profit ÷ Revenue) × 100) - displayed with proper % formatting. Company edit dialog shows all auto-calculated values with clear formula descriptions: 'Sum of all Tables' Price Column Totals', 'Sum of all Tables' Profit Column Totals', '(Profit ÷ Revenue) × 100'. Values correctly show $0.00 and 0.00% when no tables are connected (expected behavior). All formatting requirements met ($ for Revenue/Profit, % for Rent%). Auto-calculation formulas properly documented in dialog. Company node creation, parameter setting, and display all working correctly. Test scenario: Added Company node ($1000 expenses, 100 Mbps BW), verified auto-calculated fields display and formatting."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
