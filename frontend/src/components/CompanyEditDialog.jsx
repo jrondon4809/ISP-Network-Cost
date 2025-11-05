@@ -19,6 +19,7 @@ export const CompanyEditDialog = ({ company, onClose, onSave }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({
+      ...company.data,
       totalExpenses: parseFloat(totalExpenses) || 0,
       totalBW: parseFloat(totalBW) || 0,
     });
@@ -29,14 +30,19 @@ export const CompanyEditDialog = ({ company, onClose, onSave }) => {
   const bwValue = parseFloat(totalBW) || 0;
   const expensesPerMbps = bwValue > 0 ? expensesValue / bwValue : 0;
 
+  // Get auto-calculated values from company data
+  const revenue = parseFloat(company?.data?.revenue) || 0;
+  const profit = parseFloat(company?.data?.profit) || 0;
+  const rentPercent = parseFloat(company?.data?.rentPercent) || 0;
+
   return (
     <Dialog open={!!company} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Company Parameters</DialogTitle>
             <DialogDescription>
-              Update company-wide financial and bandwidth parameters. Expenses / Mbps is auto-calculated.
+              Update company-wide financial and bandwidth parameters. All calculated values are automatically updated from network tables.
             </DialogDescription>
           </DialogHeader>
           
@@ -77,22 +83,60 @@ export const CompanyEditDialog = ({ company, onClose, onSave }) => {
               </p>
             </div>
 
-            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <div className="flex items-center gap-2 mb-2">
-                <Calculator className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-foreground">Auto-Calculated Result</span>
+            <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
+              <div className="flex items-center gap-2 mb-3">
+                <Calculator className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-semibold text-purple-900 dark:text-purple-100">Auto-Calculated Results</span>
               </div>
-              <div className="space-y-1">
-                <p className="text-xs text-muted-foreground">Expenses / Mbps Formula:</p>
-                <p className="text-xs text-muted-foreground mb-2">
-                  Total Company Expenses ÷ Total Dedicated BW in Sales
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-sm text-muted-foreground">Result:</span>
-                  <span className="text-2xl font-bold text-primary">
-                    ${expensesPerMbps.toFixed(2)}
-                  </span>
-                  <span className="text-sm text-muted-foreground">/Mbps</span>
+              
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">Expenses / Mbps:</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Total Company Expenses ÷ Total Dedicated BW in Sales
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-bold text-purple-900 dark:text-purple-100">
+                      ${expensesPerMbps.toFixed(2)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">/Mbps</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-purple-200 dark:border-purple-800 pt-3">
+                  <p className="text-xs text-green-600 dark:text-green-400 mb-1">Revenue:</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Sum of all Tables' Price Column Totals
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-bold text-green-900 dark:text-green-100">
+                      ${revenue.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="border-t border-purple-200 dark:border-purple-800 pt-3">
+                  <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">Profit:</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Sum of all Tables' Profit Column Totals
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                      ${profit.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="border-t border-purple-200 dark:border-purple-800 pt-3">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mb-1">Rent%:</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    (Profit ÷ Revenue) × 100
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-bold text-amber-900 dark:text-amber-100">
+                      {rentPercent.toFixed(2)}%
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
